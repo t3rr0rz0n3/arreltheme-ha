@@ -1,5 +1,5 @@
-# Requiere Navbar Card instalado y cargado como recurso.
-# Si cambias la URL del dashboard, ajusta las cuatro rutas del template.
+# Requiere Bubble Card >= 3.2.0 y Navbar Card.
+# Los pop-ups de habitaciones pertenecen a Casa; sus hashes son únicos.
 title: Arrel · Pruebas
 navbar-templates:
   arrel_navigation:
@@ -82,47 +82,197 @@ views:
     cards:
     - type: custom:navbar-card
       template: arrel_navigation
-    - type: heading
-      heading: Resumen
     - type: markdown
       content: |
         # Tu casa, de un vistazo
         {% set luces = ['input_boolean.arrel_demo_luz_salon', 'input_boolean.arrel_demo_luz_cocina', 'input_boolean.arrel_demo_luz_dormitorio'] %}
         **{{ expand(luces) | selectattr('state', 'eq', 'on') | list | count }} luces encendidas** · {{ states('input_number.arrel_demo_temperatura') }} °C · {{ states('input_select.arrel_demo_modo') }}
-    - type: entities
-      show_header_toggle: false
-      entities:
-      - input_select.arrel_demo_modo
+    - type: custom:bubble-card
+      card_type: select
+      entity: input_select.arrel_demo_modo
+      name: Modo de la casa
+      icon: mdi:home-outline
     - type: conditional
       conditions:
       - entity: input_boolean.arrel_demo_ventana
         state: 'on'
       card:
-        type: markdown
-        content: |-
-          ### Ventana abierta
-          Revisa la ventana antes de salir.
+        type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: input_boolean.arrel_demo_ventana
+        name: Ventana abierta · Salón
+        show_state: true
+        scrolling_effect: false
   - type: grid
     cards:
-    - type: heading
-      heading: Accesos rápidos
-    - &id001
-      type: tile
-      entity: input_boolean.arrel_demo_luz_salon
+    - type: custom:bubble-card
+      card_type: separator
+      name: Habitaciones
+      icon: mdi:floor-plan
+    - type: custom:bubble-card
+      card_type: button
+      button_type: name
       name: Salón
+      icon: mdi:sofa-outline
+      scrolling_effect: false
+      button_action:
+        tap_action:
+          action: navigate
+          navigation_path: '#salon'
       tap_action:
-        action: more-info
-      icon_tap_action:
-        action: toggle
-      grid_options:
-        columns: 12
-        rows: 1
-    - &id002
-      type: markdown
-      content: |-
-        **Ambiente:** {{ states("input_number.arrel_demo_temperatura") }} °C
-
-        **Objetivo:** {{ states("input_number.arrel_demo_consigna") }} °C
+        action: navigate
+        navigation_path: '#salon'
+      sub_button:
+      - entity: input_boolean.arrel_demo_luz_salon
+        name: Luz
+        icon: mdi:lightbulb-outline
+        show_name: true
+        tap_action:
+          action: toggle
+    - type: custom:bubble-card
+      card_type: button
+      button_type: name
+      name: Cocina
+      icon: mdi:countertop-outline
+      scrolling_effect: false
+      button_action:
+        tap_action:
+          action: navigate
+          navigation_path: '#cocina'
+      tap_action:
+        action: navigate
+        navigation_path: '#cocina'
+      sub_button:
+      - entity: input_boolean.arrel_demo_luz_cocina
+        name: Luz
+        icon: mdi:lightbulb-outline
+        show_name: true
+        tap_action:
+          action: toggle
+    - type: custom:bubble-card
+      card_type: button
+      button_type: name
+      name: Dormitorio
+      icon: mdi:bed-outline
+      scrolling_effect: false
+      button_action:
+        tap_action:
+          action: navigate
+          navigation_path: '#dormitorio'
+      tap_action:
+        action: navigate
+        navigation_path: '#dormitorio'
+      sub_button:
+      - entity: input_boolean.arrel_demo_luz_dormitorio
+        name: Luz
+        icon: mdi:lightbulb-outline
+        show_name: true
+        tap_action:
+          action: toggle
+    - type: custom:bubble-card
+      card_type: pop-up
+      hash: '#salon'
+      name: Salón
+      icon: mdi:sofa-outline
+      show_close_button: true
+      cards:
+      - type: custom:bubble-card
+        card_type: separator
+        name: Iluminación
+        icon: mdi:lightbulb-outline
+      - type: custom:bubble-card
+        card_type: button
+        button_type: switch
+        entity: input_boolean.arrel_demo_luz_salon
+        name: Luz principal
+        show_state: true
+        scrolling_effect: false
+        tap_action:
+          action: toggle
+        button_action:
+          tap_action:
+            action: toggle
+      - type: custom:bubble-card
+        card_type: separator
+        name: Ambiente
+        icon: mdi:thermometer
+      - type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: input_number.arrel_demo_temperatura
+        name: Temperatura
+        show_state: true
+        scrolling_effect: false
+      - type: custom:bubble-card
+        card_type: button
+        button_type: slider
+        entity: input_number.arrel_demo_consigna
+        name: Temperatura deseada
+        show_state: true
+        scrolling_effect: false
+        slider_live_update: false
+      - type: custom:bubble-card
+        card_type: button
+        button_type: slider
+        entity: input_number.arrel_demo_persiana
+        name: Apertura de persiana
+        show_state: true
+        scrolling_effect: false
+        slider_live_update: false
+      - type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: input_boolean.arrel_demo_ventana
+        name: Ventana
+        show_state: true
+        scrolling_effect: false
+    - type: custom:bubble-card
+      card_type: pop-up
+      hash: '#cocina'
+      name: Cocina
+      icon: mdi:countertop-outline
+      show_close_button: true
+      cards:
+      - type: custom:bubble-card
+        card_type: separator
+        name: Iluminación
+        icon: mdi:lightbulb-outline
+      - type: custom:bubble-card
+        card_type: button
+        button_type: switch
+        entity: input_boolean.arrel_demo_luz_cocina
+        name: Luz principal
+        show_state: true
+        scrolling_effect: false
+        tap_action:
+          action: toggle
+        button_action:
+          tap_action:
+            action: toggle
+    - type: custom:bubble-card
+      card_type: pop-up
+      hash: '#dormitorio'
+      name: Dormitorio
+      icon: mdi:bed-outline
+      show_close_button: true
+      cards:
+      - type: custom:bubble-card
+        card_type: separator
+        name: Iluminación
+        icon: mdi:lightbulb-outline
+      - type: custom:bubble-card
+        card_type: button
+        button_type: switch
+        entity: input_boolean.arrel_demo_luz_dormitorio
+        name: Luz principal
+        show_state: true
+        scrolling_effect: false
+        tap_action:
+          action: toggle
+        button_action:
+          tap_action:
+            action: toggle
 - title: Luces
   path: luces
   type: sections
@@ -133,29 +283,46 @@ views:
     cards:
     - type: custom:navbar-card
       template: arrel_navigation
-    - type: heading
-      heading: Estancias
-    - *id001
-    - type: tile
+    - type: custom:bubble-card
+      card_type: separator
+      name: Todas las luces
+      icon: mdi:lightbulb-group-outline
+    - type: custom:bubble-card
+      card_type: button
+      button_type: switch
+      entity: input_boolean.arrel_demo_luz_salon
+      name: Salón
+      show_state: true
+      scrolling_effect: false
+      tap_action:
+        action: toggle
+      button_action:
+        tap_action:
+          action: toggle
+    - type: custom:bubble-card
+      card_type: button
+      button_type: switch
       entity: input_boolean.arrel_demo_luz_cocina
       name: Cocina
+      show_state: true
+      scrolling_effect: false
       tap_action:
-        action: more-info
-      icon_tap_action:
         action: toggle
-      grid_options:
-        columns: 12
-        rows: 1
-    - type: tile
+      button_action:
+        tap_action:
+          action: toggle
+    - type: custom:bubble-card
+      card_type: button
+      button_type: switch
       entity: input_boolean.arrel_demo_luz_dormitorio
       name: Dormitorio
+      show_state: true
+      scrolling_effect: false
       tap_action:
-        action: more-info
-      icon_tap_action:
         action: toggle
-      grid_options:
-        columns: 12
-        rows: 1
+      button_action:
+        tap_action:
+          action: toggle
 - title: Confort
   path: confort
   type: sections
@@ -166,14 +333,33 @@ views:
     cards:
     - type: custom:navbar-card
       template: arrel_navigation
-    - type: heading
-      heading: Confort
-    - type: entities
-      show_header_toggle: false
-      entities:
-      - input_number.arrel_demo_consigna
-      - input_number.arrel_demo_persiana
-    - *id002
+    - type: custom:bubble-card
+      card_type: separator
+      name: Salón
+      icon: mdi:sofa-outline
+    - type: custom:bubble-card
+      card_type: button
+      button_type: state
+      entity: input_number.arrel_demo_temperatura
+      name: Temperatura
+      show_state: true
+      scrolling_effect: false
+    - type: custom:bubble-card
+      card_type: button
+      button_type: slider
+      entity: input_number.arrel_demo_consigna
+      name: Temperatura deseada
+      show_state: true
+      scrolling_effect: false
+      slider_live_update: false
+    - type: custom:bubble-card
+      card_type: button
+      button_type: slider
+      entity: input_number.arrel_demo_persiana
+      name: Apertura de persiana
+      show_state: true
+      scrolling_effect: false
+      slider_live_update: false
 - title: Pruebas
   path: laboratorio
   type: sections
@@ -184,25 +370,30 @@ views:
     cards:
     - type: custom:navbar-card
       template: arrel_navigation
-    - type: heading
-      heading: Simulación
+    - type: custom:bubble-card
+      card_type: separator
+      name: Simulación
+      icon: mdi:tune
     - type: markdown
-      content: Cambia estos valores y vuelve a Casa para ver el resultado. Todos los
-        controles son simulados; el modo y la consigna no ejecutan acciones.
-    - type: entities
-      show_header_toggle: false
-      entities:
-      - input_number.arrel_demo_temperatura
-      - input_boolean.arrel_demo_ventana
-  - type: grid
-    cards:
-    - type: heading
-      heading: Pruebas visuales
-    - type: markdown
-      content: |-
-        ### Lista de comprobación
-        - Alterna claro y oscuro desde tu perfil.
-        - Prueba móvil vertical y tablet horizontal.
-        - Comprueba textos largos y controles táctiles.
-        - Enciende luces y abre la ventana simulada.
-        - Verifica que el aviso aparece y desaparece.
+      content: Todos los controles son simulados. Modifica la temperatura o la ventana
+        y vuelve a Casa. La consigna no cambia la temperatura automáticamente.
+    - type: custom:bubble-card
+      card_type: button
+      button_type: slider
+      entity: input_number.arrel_demo_temperatura
+      name: Temperatura simulada
+      show_state: true
+      scrolling_effect: false
+      slider_live_update: false
+    - type: custom:bubble-card
+      card_type: button
+      button_type: switch
+      entity: input_boolean.arrel_demo_ventana
+      name: Simular ventana abierta
+      show_state: true
+      scrolling_effect: false
+      tap_action:
+        action: toggle
+      button_action:
+        tap_action:
+          action: toggle

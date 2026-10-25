@@ -1,5 +1,5 @@
 # Arrel · Graphite / Porcelain
-# Las variables navbar-* se utilizan en custom:navbar-card.
+# Variables compartidas de Navbar Card y Bubble Card.
 Arrel:
   primary-color: '#425F93'
   accent-color: '#425F93'
@@ -38,6 +38,7 @@ Arrel:
       sidebar-selected-icon-color: '#425F93'
       arrel-navigation-active-background: '#E5EBF5'
       arrel-navigation-shadow: 0 8px 28px rgba(24, 29, 40, 0.08)
+      bubble-backdrop-background-color: rgba(24, 29, 40, 0.24)
     dark:
       primary-color: '#A6BDE7'
       accent-color: '#A6BDE7'
@@ -63,6 +64,7 @@ Arrel:
       sidebar-selected-icon-color: '#A6BDE7'
       arrel-navigation-active-background: '#2C374D'
       arrel-navigation-shadow: 0 12px 32px rgba(0, 0, 0, 0.28)
+      bubble-backdrop-background-color: rgba(0, 0, 0, 0.56)
   navbar-primary-color: var(--primary-color)
   navbar-background-color: var(--card-background-color)
   navbar-border-radius: 20px
@@ -70,3 +72,16 @@ Arrel:
   navbar-box-shadow: var(--arrel-navigation-shadow)
   navbar-box-shadow-desktop: var(--arrel-navigation-shadow)
   navbar-box-shadow-mobile-floating: var(--arrel-navigation-shadow)
+  bubble-border-radius: 18px
+  bubble-main-background-color: var(--card-background-color)
+  bubble-secondary-background-color: var(--secondary-background-color)
+  bubble-accent-color: var(--primary-color)
+  bubble-icon-background-color: var(--secondary-background-color)
+  bubble-icon-border-radius: 12px
+  bubble-sub-button-background-color: var(--secondary-background-color)
+  bubble-sub-button-border-radius: 12px
+  bubble-border: 1px solid var(--ha-card-border-color)
+  bubble-box-shadow: none
+  bubble-pop-up-border-radius: 24px
+  bubble-pop-up-main-background-color: var(--card-background-color)
+  bubble-pop-up-background-color: var(--primary-background-color)

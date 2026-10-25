@@ -1,5 +1,16 @@
 # Historial de cambios
 
+## 0.3.0 — Sin publicar
+
+- Dashboard centrado en Bubble Card: Salón, Cocina y Dormitorio con pop-ups independientes.
+- Subbotones de luz en portada para actuar sin abrir cada habitación.
+- Selectores, estados, interruptores y sliders Bubble Card en las vistas generales.
+- Variables de tema Bubble Card para fondos, bordes, iconos y pop-ups en claro/oscuro.
+- Requiere Bubble Card >= 3.2.0 y Navbar Card; mantiene los ocho ayudantes y las URLs existentes.
+- HACS solo actualiza el tema; copiar también el nuevo dashboard.
+
+Validación estática local; pendiente de prueba funcional y visual en Home Assistant.
+
 ## 0.2.0 — Sin publicar
 
 - Nueva paleta grafito/porcelana y acento azul pizarra en ambos modos.

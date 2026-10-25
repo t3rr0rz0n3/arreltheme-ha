@@ -1,6 +1,6 @@
 # Arrel · Prototipo para Home Assistant
 
-Tema en grafito y porcelana, con acento azul pizarra, bordes finos y modos claro/oscuro. Diseñado para `custom:navbar-card`. El tema funciona por sí solo; el dashboard de ejemplo requiere Navbar Card y usa controles nativos con entidades simuladas.
+Tema en grafito y porcelana, con acento azul pizarra, bordes finos y modos claro/oscuro. Diseñado principalmente para `custom:bubble-card`, con `custom:navbar-card` para navegación general. El tema funciona por sí solo; el dashboard requiere ambas tarjetas y usa entidades simuladas.
 
 ## Instalar solo el tema
 
@@ -32,11 +32,13 @@ HACS gestiona únicamente el tema. No instala los archivos de `dashboards/` ni d
 
 Si instalaste antes el tema en `/config/themes/arrel.yaml`, elimina esa copia al pasar a `/config/themes/arrel/arrel.yaml` o a HACS para evitar dos definiciones de `Arrel`.
 
-## Instalar el dashboard con Navbar Card
+## Instalar el dashboard con Bubble Card y Navbar Card
 
-Antes de copiar el dashboard, instala **Navbar Card** desde HACS. Si no aparece, añade `https://github.com/joseluis9595/lovelace-navbar-card` como repositorio personalizado de tipo **Dashboard** (Arrel se instala como **Theme**). Sigue las instrucciones de instalación de la tarjeta y recarga el navegador.
+Antes de copiar el dashboard, instala **Bubble Card 3.2.0 o posterior** y **Navbar Card** desde HACS. Bubble Card usa el repositorio `https://github.com/Clooos/Bubble-Card`, de tipo **Dashboard**. Esta versión mínima es necesaria para los pop-ups independientes con contenido en `cards`.
 
-Comprueba en Ajustes → Paneles de control → Recursos (con modo avanzado activado) que está registrado el módulo `/hacsfiles/lovelace-navbar-card/navbar-card.js`. Si gestionas los recursos por YAML, añade esa URL con `type: module` a tu lista `lovelace.resources` existente. No lo registres dos veces. Si aparece «Custom element doesn't exist: navbar-card», revisa instalación, recurso y caché del navegador.
+Instala también **Navbar Card** desde HACS. Si no aparece, añade `https://github.com/joseluis9595/lovelace-navbar-card` como repositorio personalizado de tipo **Dashboard** (Arrel se instala como **Theme**). Sigue las instrucciones de instalación de la tarjeta y recarga el navegador.
+
+Comprueba en Ajustes → Paneles de control → Recursos (con modo avanzado activado) que están registrados los módulos `/hacsfiles/lovelace-navbar-card/navbar-card.js` y `/hacsfiles/Bubble-Card/bubble-card.js`. Si gestionas los recursos por YAML, añade ambas URLs con `type: module` a tu lista `lovelace.resources` existente. No registres un recurso dos veces. Si aparece «Custom element doesn't exist: navbar-card», revisa instalación, recurso y caché del navegador.
 
 
 Si ya instalaste el tema manualmente o mediante HACS, copia solo el dashboard y el paquete en el paso 1 y conserva la configuración de temas existente.
@@ -69,15 +71,28 @@ Usa una versión actual de Home Assistant con vistas Sections y tarjetas Heading
 
 ## Qué puedes probar
 
-- Casa: resumen reactivo, aviso de ventana abierta y acceso rápido a la luz del salón.
+- Casa: resumen reactivo y tarjetas de Salón, Cocina y Dormitorio. Un toque en el nombre o icono de la habitación abre su pop-up; el subbotón Luz permite alternar la luz sin abrirlo.
+- Cada habitación agrupa sus controles en un pop-up Bubble Card. El salón incluye luz, temperatura, consigna, persiana y ventana; cocina y dormitorio incluyen su luz.
 - Luces: controles por estancia.
 - Confort: consigna y apertura de persiana simuladas.
-- Pulsa el icono de una luz para alternarla; pulsa la tarjeta para abrir sus detalles.
+- Las tarjetas de luz alternan su estado al pulsarlas. Los controles numéricos usan sliders Bubble Card: mantén pulsado y arrastra para ajustar; no envían cambios continuamente mientras deslizas.
 - Pruebas: modifica la temperatura y activa Ventana abierta para mostrar el aviso en Casa.
 - Los ayudantes no están conectados a dispositivos. La temperatura no evoluciona al cambiar la consigna; el modo de casa no activa escenas. Sus valores iniciales se restablecen al reiniciar.
 - Sections distribuye las secciones según el ancho disponible, hasta dos columnas. La cantidad real depende del viewport y de la barra lateral.
 
+## Añadir habitaciones y entidades
+
+La vista Casa contiene un botón de acceso y un `card_type: pop-up` por habitación. Cada pop-up tiene un `hash` único (`#salon`, `#cocina`, `#dormitorio`) y sus entidades están agrupadas dentro de `cards`. Se cierran con la X; prueba también Atrás en el móvil y Escape en escritorio.
+
+Para añadir una habitación, duplica un botón de acceso y un pop-up dentro de la misma vista, cambia nombre/icono y asigna el mismo hash nuevo a `navigation_path` y `hash`. Después añade sus controles a `cards`. El botón configura por separado la acción del cuerpo (`button_action.tap_action`) y la del icono (`tap_action`) para que ambos abran la habitación.
+
+Para pasar a dispositivos reales, sustituye las entidades de ejemplo tanto en los pop-ups como en los subbotones, accesos globales y contador de luces. Usa un botón Bubble de tipo `switch` para luces sin regulación, `slider` para luces regulables, y tarjetas `cover`/`climate` para dispositivos reales de persiana/climatización. La persiana y consigna actuales son `input_number`, no dispositivos de esos dominios. Los sensores de temperatura y ventana se muestran con botones de tipo `state`.
+
+Los ayudantes del paquete no han cambiado. El prototipo solo tiene sensores de ambiente en el salón: añade los de cada habitación cuando conozcamos tus entidades, sin reutilizar el mismo sensor como si midiera varias habitaciones.
+
 ## Ajustar la navegación
+
+Navbar Card mantiene Casa, Luces, Confort y Pruebas como accesos generales; los detalles por habitación se abren con Bubble Card desde Casa.
 
 La configuración común está en `navbar-templates.arrel_navigation` al inicio de `dashboards/arrel-demo.yaml`; cada vista incluye una única tarjeta que referencia esa plantilla.
 
@@ -92,11 +107,11 @@ Usa una versión de Navbar Card que incluya plantillas y `layout.auto_padding`; 
 
 ## Actualizar desde el prototipo anterior
 
-Actualiza el tema desde HACS (o reemplaza su archivo manualmente), ejecuta `frontend.reload_themes` e instala Navbar Card. Reemplaza también `/config/dashboards/arrel-demo.yaml` con este ejemplo y recarga el dashboard. **HACS no actualiza el dashboard de ejemplo.** Si ya lo has personalizado, integra la plantilla y la tarjeta de navegación en tus vistas en lugar de sobrescribir tus cambios. El paquete de ayudantes no ha cambiado.
+Actualiza el tema desde HACS (o reemplaza su archivo manualmente), ejecuta `frontend.reload_themes` e instala Bubble Card y Navbar Card. Reemplaza también `/config/dashboards/arrel-demo.yaml` con este ejemplo y recarga el dashboard. **HACS no actualiza el dashboard de ejemplo.** Si ya lo has personalizado, integra la plantilla y la tarjeta de navegación en tus vistas en lugar de sobrescribir tus cambios. El paquete de ayudantes no ha cambiado.
 
 ## Validación en tus pantallas
 
-Prueba 360–390 px en móvil, 768–1024 px en tablet y 1440 px en PC; también tablet vertical/horizontal y zoom al 200 %. Revisa desbordamientos, legibilidad, acceso táctil y ambos modos. Comprueba que el contador cambia con las tres luces y que el aviso desaparece al cerrar la ventana simulada. Prueba también 1023/1024 px, las cuatro rutas, el indicador de ruta activa, la barra lateral de Home Assistant abierta/cerrada y el último control de cada vista: debe quedar accesible por encima de la navbar. Verifica el área de gestos en la app móvil y la navegación con teclado.
+Prueba 360–390 px en móvil, 768–1024 px en tablet y 1440 px en PC; también tablet vertical/horizontal y zoom al 200 %. Revisa desbordamientos, legibilidad, acceso táctil y ambos modos. Comprueba que el contador cambia con las tres luces y que el aviso desaparece al cerrar la ventana simulada. Prueba también 1023/1024 px, las cuatro rutas, el indicador de ruta activa, la barra lateral de Home Assistant abierta/cerrada y el último control de cada vista: debe quedar accesible por encima de la navbar. Verifica el área de gestos en la app móvil y la navegación con teclado. Abre y cierra cada habitación, prueba sliders y subbotones, y comprueba que el pop-up recibe las pulsaciones por encima de la navbar. Prueba también entidades no disponibles y textos largos.
 
 ## Iteración y HACS
 
@@ -110,7 +125,7 @@ Para modificar colores, edita `themes/arrel.yaml` y ejecuta `frontend.reload_the
 
 ## Publicar y versionar
 
-Consulta [PUBLISHING.md](PUBLISHING.md) para publicar versiones. La siguiente versión propuesta es `v0.2.0`; no se ha creado el tag ni la release. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
+Consulta [PUBLISHING.md](PUBLISHING.md) para publicar versiones. La siguiente versión propuesta es `v0.3.0`; no se ha creado el tag ni la release. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
 
 ## Retirada
 
@@ -126,3 +141,5 @@ Si instalaste el tema con HACS, retíralo desde HACS. Para la instalación manua
 - [Navbar Card: instalación](https://joseluis9595.github.io/lovelace-navbar-card/docs/getting-started/installation/)
 - [Navbar Card: estilos](https://joseluis9595.github.io/lovelace-navbar-card/docs/configuration/styles/)
 - [Navbar Card: espacio para la navegación](https://joseluis9595.github.io/lovelace-navbar-card/docs/configuration/layout/)
+
+- [Bubble Card: configuración oficial](https://github.com/Clooos/Bubble-Card#readme)

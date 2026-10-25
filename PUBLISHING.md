@@ -1,8 +1,23 @@
 # Publicar arreltheme-ha
 
-## Próxima versión: v0.2.0
+## Próxima versión: v0.3.0
 
-El proyecto utiliza ahora GitHub en `https://github.com/t3rr0rz0n3/arreltheme-ha`. Tras revisar y probar los cambios, haz commit y push, crea `git tag -a v0.2.0 -m "Arrel 0.2.0"` y sube `git push origin v0.2.0`. Publica una release en GitHub con ese tag y las notas de CHANGELOG.md. No se ha creado ni publicado esta versión automáticamente. Las instrucciones de Forgejo y espejos siguientes son opcionales.
+Después de revisar y probar el dashboard, ejecuta desde la raíz del repositorio:
+
+```sh
+git add themes/arrel.yaml dashboards/arrel-demo.yaml README.md CHANGELOG.md PUBLISHING.md
+git commit -m "Build room dashboard with Bubble Card"
+git push origin main
+git tag -a v0.3.0 -m "Arrel 0.3.0"
+git push origin v0.3.0
+gh release create v0.3.0 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.3.0" --notes "Dashboard por habitaciones con Bubble Card, pop-ups y controles rápidos. Requiere Bubble Card >= 3.2.0 y Navbar Card. Actualizar también el YAML del dashboard manualmente." --latest
+```
+
+El tag debe ser nuevo; si ya has publicado `v0.3.0`, utiliza el siguiente número y actualiza las notas. No recrees ni muevas un tag publicado. No se ejecutan estos comandos automáticamente.
+
+En cada entrega se facilitarán los comandos de `git add`, commit, push, tag y release correspondientes. HACS necesita la release en GitHub para ofrecer esa versión numerada. El tema y el dashboard se actualizan por separado.
+
+Las instrucciones de Forgejo y espejos siguientes son opcionales.
 
 Forgejo puede ser el repositorio principal. HACS solo admite repositorios públicos en GitHub: una URL de Forgejo no sirve como repositorio personalizado de HACS. El manifiesto incluido prepara el tema para un espejo opcional en GitHub; no configura ni publica ningún remoto.
 
