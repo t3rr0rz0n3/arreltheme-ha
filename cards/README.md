@@ -4,7 +4,19 @@ Panel completo inspirado en la referencia: dos columnas, iconos elevados, estado
 
 La cabecera muestra la temperatura media de los sensores disponibles (solo si usan la misma unidad) y el número de ventanas abiertas; `?` indica que faltan datos de alguna ventana. Los indicadores de cabecera son informativos. No se incluyen los desplegables de cabecera/pie de la imagen; cada tarjeta de habitación sí abre sus controles. Es una adaptación del diseño, pendiente de comprobar visualmente en Home Assistant.
 
-## Dependencias
+## Método sencillo: pegar una tarjeta
+
+1. Instala **Bubble Card >= 3.2.0** y **card-mod** desde HACS, y recarga el navegador. Esta variante no necesita Decluttering Card.
+2. Abre `cards/arrel-rooms-paste.yaml` en tu editor y copia todo su contenido.
+3. En Home Assistant: Editar dashboard → Añadir tarjeta → Manual. Borra el contenido del editor y pega lo copiado. Debe empezar con `type: custom:mod-card` tras los comentarios.
+4. Sustituye las entidades de ejemplo por las tuyas utilizando «Reemplazar todas» en el editor de archivos antes de copiarlo. En esta variante expandida cada entidad aparece en varios lugares: hay que cambiar todas sus apariciones.
+5. Guarda. No necesitas copiar archivos a `/config`, editar `configuration.yaml`, usar `!include` ni registrar un nuevo dashboard. Aplica el tema Arrel al dashboard para obtener la paleta prevista.
+
+Los bloques que empiezan por `arrel-habitaciones:` sirven únicamente para `configuration.yaml`, nunca para el editor de una tarjeta. El error «No card type configured» indica que se ha pegado un bloque que no define `type`.
+
+Si prefieres cambiar los datos una sola vez, edita `arrel_rooms` en `cards/arrel-rooms.yaml` y ejecuta `python3 scripts/build_rooms_card.py` (requiere PyYAML). Vuelve a copiar el archivo generado `arrel-rooms-paste.yaml`. No edites solo la lista de cabecera de la variante expandida: esa lista ya no está vinculada a las tarjetas.
+
+## Dependencias del método con plantillas
 
 Instala desde HACS y comprueba que los recursos JavaScript están cargados:
 

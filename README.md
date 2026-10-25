@@ -172,3 +172,5 @@ Si instalaste el tema con HACS, retíralo desde HACS. Para la instalación manua
 ## Panel de habitaciones de dos columnas
 
 La tarjeta completa inspirada en la referencia está en [cards/arrel-rooms.yaml](cards/arrel-rooms.yaml). Edita los bloques de área y entidades; la plantilla compartida genera cada tarjeta con su pop-up. Consulta [instalación y configuración](cards/README.md). Requiere Bubble Card, Decluttering Card y card-mod. Incluye un dashboard independiente para probarlo.
+
+Para pegar directamente en **Añadir tarjeta → Manual**, utiliza [arrel-rooms-paste.yaml](cards/arrel-rooms-paste.yaml). Solo requiere Bubble Card y card-mod, sin `!include` ni configuración de dashboard. Consulta el método sencillo en [la guía](cards/README.md).

@@ -1,5 +1,12 @@
 # Historial de cambios
 
+## 0.5.1 — Sin publicar
+
+- Tarjeta autónoma `cards/arrel-rooms-paste.yaml` para pegar en el editor Manual.
+- Generador para expandir las habitaciones sin dependencia de Decluttering Card.
+- Guía simplificada para evitar confundir configuración de dashboard y de tarjeta.
+- Sin cambios visuales en el tema; actualizar HACS por sí solo no añade esta tarjeta.
+
 ## 0.5.0 — Sin publicar
 
 - Panel reutilizable de habitaciones en dos columnas con Bubble Card y pop-ups.
