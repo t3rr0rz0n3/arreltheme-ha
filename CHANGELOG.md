@@ -1,5 +1,14 @@
 # Historial de cambios
 
+## 0.5.0 — Sin publicar
+
+- Panel reutilizable de habitaciones en dos columnas con Bubble Card y pop-ups.
+- Entidades y área configurables una sola vez por habitación mediante Decluttering Card.
+- Tema de superficies e iconos claro/oscuro, humedad, temperatura, presencia y ventana.
+- Dashboard independiente y guía de instalación; requiere card-mod para el contenedor.
+
+Validación local de estructura y plantillas; pendiente de prueba visual en Home Assistant.
+
 ## 0.4.0 — Sin publicar
 
 - Mushroom Template Card moderna en la portada: resumen reactivo y estado de ventana.

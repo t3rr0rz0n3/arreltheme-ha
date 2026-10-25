@@ -1,7 +1,5 @@
 # Arrel · Graphite / Porcelain
-# Mushroom Template >= 5 hereda ha-card-*, textos y primary-color de HA.
-# No utiliza las variables mush-* de las tarjetas legacy.
-# Navbar Card y Bubble Card tienen sus variables específicas más abajo.
+# Tema HA + Navbar + Bubble + Mushroom y panel reutilizable de habitaciones.
 Arrel:
   primary-color: '#425F93'
   accent-color: '#425F93'
@@ -42,6 +40,9 @@ Arrel:
       arrel-navigation-shadow: 0 8px 28px rgba(24, 29, 40, 0.08)
       bubble-backdrop-background-color: rgba(24, 29, 40, 0.24)
       disabled-text-color: '#626875'
+      arrel-room-background: '#ECEBE8'
+      arrel-room-icon-background: '#FFFFFF'
+      arrel-room-light-color: '#96702B'
     dark:
       primary-color: '#A6BDE7'
       accent-color: '#A6BDE7'
@@ -69,6 +70,9 @@ Arrel:
       arrel-navigation-shadow: 0 12px 32px rgba(0, 0, 0, 0.28)
       bubble-backdrop-background-color: rgba(0, 0, 0, 0.56)
       disabled-text-color: '#ADB3C0'
+      arrel-room-background: '#252629'
+      arrel-room-icon-background: '#313238'
+      arrel-room-light-color: '#E4BF79'
   navbar-primary-color: var(--primary-color)
   navbar-background-color: var(--card-background-color)
   navbar-border-radius: 20px

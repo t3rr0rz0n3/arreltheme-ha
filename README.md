@@ -148,7 +148,7 @@ Para modificar colores, edita `themes/arrel.yaml` y ejecuta `frontend.reload_the
 
 ## Publicar y versionar
 
-Consulta [PUBLISHING.md](PUBLISHING.md) para publicar versiones. La siguiente versión propuesta es `v0.4.0`; no se ha creado el tag ni la release. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
+Consulta [PUBLISHING.md](PUBLISHING.md) para publicar versiones. La siguiente versión propuesta es `v0.5.0`; no se ha creado el tag ni la release. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
 
 ## Retirada
 
@@ -168,3 +168,7 @@ Si instalaste el tema con HACS, retíralo desde HACS. Para la instalación manua
 - [Bubble Card: configuración oficial](https://github.com/Clooos/Bubble-Card#readme)
 
 - [Mushroom Template Card: configuración y temas](https://github.com/piitaya/lovelace-mushroom/blob/main/docs/cards/template.md)
+
+## Panel de habitaciones de dos columnas
+
+La tarjeta completa inspirada en la referencia está en [cards/arrel-rooms.yaml](cards/arrel-rooms.yaml). Edita los bloques de área y entidades; la plantilla compartida genera cada tarjeta con su pop-up. Consulta [instalación y configuración](cards/README.md). Requiere Bubble Card, Decluttering Card y card-mod. Incluye un dashboard independiente para probarlo.

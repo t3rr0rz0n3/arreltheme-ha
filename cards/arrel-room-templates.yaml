@@ -1,0 +1,153 @@
+# Contenido de decluttering_templates (sin repetir esa clave).
+arrel_room:
+  default:
+  - name: Habitación
+  - icon: mdi:home-outline
+  card:
+    type: vertical-stack
+    cards:
+    - type: custom:bubble-card
+      card_type: button
+      button_type: state
+      entity: '[[temperature]]'
+      name: '[[name]]'
+      icon: '[[icon]]'
+      show_state: true
+      scrolling_effect: false
+      card_layout: large
+      rows: 2.75
+      button_action:
+        tap_action:
+          action: navigate
+          navigation_path: '#room-[[area]]'
+      tap_action:
+        action: navigate
+        navigation_path: '#room-[[area]]'
+      styles: |
+        .bubble-button-card-container {
+          height: 154px !important;
+          border-radius: 24px !important;
+          background: var(--arrel-room-background, var(--secondary-background-color)) !important;
+          border: none !important;
+        }
+        .bubble-button-card { height: 154px !important; }
+        .bubble-button-background { opacity: 0 !important; }
+        .bubble-icon-container {
+          position: absolute !important;
+          top: 16px; left: 16px;
+          width: 48px !important; height: 48px !important;
+          border-radius: 16px !important;
+          background: var(--arrel-room-icon-background, var(--card-background-color)) !important;
+          box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        }
+        .bubble-icon {
+          color: var(--primary-text-color) !important;
+          --mdc-icon-size: 25px;
+        }
+        .bubble-name-container {
+          position: absolute !important;
+          top: 82px; left: 16px; right: 12px;
+          margin: 0 !important; padding: 0 !important;
+          width: auto !important;
+        }
+        .bubble-name { font-size: 16px !important; font-weight: 600 !important; }
+        .bubble-state {
+          display: block !important; font-size: 12px !important;
+          color: var(--secondary-text-color) !important;
+          opacity: 1 !important; margin-top: 7px;
+          white-space: normal !important;
+        }
+        .bubble-button-card-container::after {
+          content: '›'; position: absolute; top: 23px; right: 20px;
+          font-size: 28px; color: var(--secondary-text-color); pointer-events: none;
+        }
+        .bubble-name-container::before {
+          content: ''; position: absolute; top: 31px; left: 0;
+          width: 8px; height: 8px; border-radius: 50%;
+          background: var(--arrel-room-presence, var(--disabled-text-color));
+        }
+        .bubble-state { padding-left: 15px; }
+        @media (max-width: 370px) {
+          .bubble-name { font-size: 14px !important; }
+          .bubble-state { font-size: 11px !important; }
+        }
+        ${(() => {
+          const read = id => hass.states[id];
+          const value = id => {
+            const item = read(id);
+            if (!item || ['unknown', 'unavailable', ''].includes(item.state)) return '—';
+            const number = Number(item.state);
+            return Number.isFinite(number) ? String(Math.round(number * 10) / 10) : '—';
+          };
+          const area = hass.areas?.['[[area]]'];
+          const name = card.querySelector('.bubble-name');
+          if (name) name.textContent = area?.name || '[[name]]';
+          const stateText = card.querySelector('.bubble-state');
+          const temp = read('[[temperature]]');
+          const unit = temp?.attributes?.unit_of_measurement || '°C';
+          const windowState = read('[[window]]')?.state;
+          const windowText = windowState === 'on' ? ' ▣' : windowState === 'off' ? '' : ' ?';
+          if (stateText) stateText.textContent = value('[[temperature]]') + unit + ' | ' + value('[[humidity]]') + '%' + windowText;
+          const container = card.querySelector('.bubble-button-card-container');
+          const occupied = read('[[presence]]')?.state;
+          container?.style.setProperty('--arrel-room-presence', occupied === 'on' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+          container?.setAttribute('title', (occupied === 'on' ? 'Presencia detectada' : occupied === 'off' ? 'Sin presencia' : 'Presencia sin datos') + ' · ' + (windowState === 'on' ? 'Ventana abierta' : windowState === 'off' ? 'Ventana cerrada' : 'Ventana sin datos'));
+          const iconElement = card.querySelector('.bubble-icon');
+          if (iconElement) iconElement.style.setProperty('color', read('[[light]]')?.state === 'on' ? 'var(--arrel-room-light-color, var(--warning-color))' : 'var(--primary-text-color)', 'important');
+          return '';
+        })()}
+    - type: custom:bubble-card
+      card_type: pop-up
+      hash: '#room-[[area]]'
+      name: '[[name]]'
+      icon: '[[icon]]'
+      show_close_button: true
+      cards:
+      - type: custom:bubble-card
+        card_type: separator
+        name: Iluminación
+        icon: mdi:lightbulb-outline
+      - type: custom:bubble-card
+        card_type: button
+        button_type: switch
+        entity: '[[light]]'
+        name: Luz principal
+        show_state: true
+        scrolling_effect: false
+        tap_action:
+          action: toggle
+        button_action:
+          tap_action:
+            action: toggle
+      - type: custom:bubble-card
+        card_type: separator
+        name: Ambiente
+        icon: mdi:thermometer
+      - type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: '[[temperature]]'
+        name: Temperatura
+        show_state: true
+        scrolling_effect: false
+      - type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: '[[humidity]]'
+        name: Humedad
+        show_state: true
+        scrolling_effect: false
+      - type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: '[[presence]]'
+        name: Presencia
+        show_state: true
+        scrolling_effect: false
+      - type: custom:bubble-card
+        card_type: button
+        button_type: state
+        entity: '[[window]]'
+        name: Ventana
+        show_state: true
+        scrolling_effect: false

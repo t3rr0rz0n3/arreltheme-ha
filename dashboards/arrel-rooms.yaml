@@ -1,0 +1,13 @@
+# Dashboard independiente: las inclusiones se resuelven respecto a este archivo.
+title: Arrel · Habitaciones
+decluttering_templates: !include ../cards/arrel-room-templates.yaml
+views:
+  - title: Habitaciones
+    path: habitaciones
+    type: sections
+    max_columns: 1
+    theme: Arrel
+    sections:
+      - type: grid
+        cards:
+          - !include ../cards/arrel-rooms.yaml
