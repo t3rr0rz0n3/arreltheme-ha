@@ -1,5 +1,15 @@
 # Historial de cambios
 
+## 0.4.0 — Sin publicar
+
+- Mushroom Template Card moderna en la portada: resumen reactivo y estado de ventana.
+- Accesos directos a Luces y al pop-up del salón, con estados sin datos explícitos.
+- Colores del tema HA para Mushroom, incluyendo texto deshabilitado; sin dependencia de card-mod ni Mushroom Themes.
+- El dashboard requiere ahora Mushroom >= 5 además de Bubble Card y Navbar Card.
+- Sin cambios en los ayudantes. Actualizar también el YAML del dashboard.
+
+Validación estática y de plantillas local; pendiente de prueba visual en Home Assistant.
+
 ## 0.3.0 — Sin publicar
 
 - Dashboard centrado en Bubble Card: Salón, Cocina y Dormitorio con pop-ups independientes.

@@ -1,19 +1,19 @@
 # Publicar arreltheme-ha
 
-## Próxima versión: v0.3.0
+## Próxima versión: v0.4.0
 
 Después de revisar y probar el dashboard, ejecuta desde la raíz del repositorio:
 
 ```sh
 git add themes/arrel.yaml dashboards/arrel-demo.yaml README.md CHANGELOG.md PUBLISHING.md
-git commit -m "Build room dashboard with Bubble Card"
+git commit -m "Integrate Mushroom Template Card with Arrel"
 git push origin main
-git tag -a v0.3.0 -m "Arrel 0.3.0"
-git push origin v0.3.0
-gh release create v0.3.0 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.3.0" --notes "Dashboard por habitaciones con Bubble Card, pop-ups y controles rápidos. Requiere Bubble Card >= 3.2.0 y Navbar Card. Actualizar también el YAML del dashboard manualmente." --latest
+git tag -a v0.4.0 -m "Arrel 0.4.0"
+git push origin v0.4.0
+gh release create v0.4.0 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.4.0" --notes "Resumen y avisos con Mushroom Template Card. Requiere Mushroom >= 5, Bubble Card >= 3.2.0 y Navbar Card. Actualizar también el YAML del dashboard manualmente." --latest
 ```
 
-El tag debe ser nuevo; si ya has publicado `v0.3.0`, utiliza el siguiente número y actualiza las notas. No recrees ni muevas un tag publicado. No se ejecutan estos comandos automáticamente.
+El tag debe ser nuevo; si ya has publicado `v0.4.0`, utiliza el siguiente número y actualiza las notas. No recrees ni muevas un tag publicado. No se ejecutan estos comandos automáticamente.
 
 En cada entrega se facilitarán los comandos de `git add`, commit, push, tag y release correspondientes. HACS necesita la release en GitHub para ofrecer esa versión numerada. El tema y el dashboard se actualizan por separado.
 

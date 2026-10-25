@@ -1,6 +1,6 @@
 # Arrel · Prototipo para Home Assistant
 
-Tema en grafito y porcelana, con acento azul pizarra, bordes finos y modos claro/oscuro. Diseñado principalmente para `custom:bubble-card`, con `custom:navbar-card` para navegación general. El tema funciona por sí solo; el dashboard requiere ambas tarjetas y usa entidades simuladas.
+Tema en grafito y porcelana, con acento azul pizarra, bordes finos y modos claro/oscuro. Diseñado principalmente para `custom:bubble-card`, con `custom:navbar-card` para navegación general. Mushroom Template Card muestra los resúmenes. El tema funciona por sí solo; el dashboard requiere las tres colecciones y usa entidades simuladas.
 
 ## Instalar solo el tema
 
@@ -32,13 +32,13 @@ HACS gestiona únicamente el tema. No instala los archivos de `dashboards/` ni d
 
 Si instalaste antes el tema en `/config/themes/arrel.yaml`, elimina esa copia al pasar a `/config/themes/arrel/arrel.yaml` o a HACS para evitar dos definiciones de `Arrel`.
 
-## Instalar el dashboard con Bubble Card y Navbar Card
+## Instalar el dashboard con Bubble Card, Navbar Card y Mushroom
 
-Antes de copiar el dashboard, instala **Bubble Card 3.2.0 o posterior** y **Navbar Card** desde HACS. Bubble Card usa el repositorio `https://github.com/Clooos/Bubble-Card`, de tipo **Dashboard**. Esta versión mínima es necesaria para los pop-ups independientes con contenido en `cards`.
+Antes de copiar el dashboard, instala **Bubble Card 3.2.0 o posterior**, **Navbar Card** y **Mushroom 5 o posterior** desde HACS. Mushroom está en `https://github.com/piitaya/lovelace-mushroom` (tipo Dashboard). Bubble Card usa el repositorio `https://github.com/Clooos/Bubble-Card`, de tipo **Dashboard**. Esta versión mínima es necesaria para los pop-ups independientes con contenido en `cards`.
 
 Instala también **Navbar Card** desde HACS. Si no aparece, añade `https://github.com/joseluis9595/lovelace-navbar-card` como repositorio personalizado de tipo **Dashboard** (Arrel se instala como **Theme**). Sigue las instrucciones de instalación de la tarjeta y recarga el navegador.
 
-Comprueba en Ajustes → Paneles de control → Recursos (con modo avanzado activado) que están registrados los módulos `/hacsfiles/lovelace-navbar-card/navbar-card.js` y `/hacsfiles/Bubble-Card/bubble-card.js`. Si gestionas los recursos por YAML, añade ambas URLs con `type: module` a tu lista `lovelace.resources` existente. No registres un recurso dos veces. Si aparece «Custom element doesn't exist: navbar-card», revisa instalación, recurso y caché del navegador.
+Comprueba en Ajustes → Paneles de control → Recursos (con modo avanzado activado) que están registrados los módulos `/hacsfiles/lovelace-navbar-card/navbar-card.js` , `/hacsfiles/Bubble-Card/bubble-card.js` y `/hacsfiles/lovelace-mushroom/mushroom.js`. Si gestionas los recursos por YAML, añade las tres URLs con `type: module` a tu lista `lovelace.resources` existente. No registres un recurso dos veces. Si aparece «Custom element doesn't exist: navbar-card», revisa instalación, recurso y caché del navegador.
 
 
 Si ya instalaste el tema manualmente o mediante HACS, copia solo el dashboard y el paquete en el paso 1 y conserva la configuración de temas existente.
@@ -80,6 +80,29 @@ Usa una versión actual de Home Assistant con vistas Sections y tarjetas Heading
 - Los ayudantes no están conectados a dispositivos. La temperatura no evoluciona al cambiar la consigna; el modo de casa no activa escenas. Sus valores iniciales se restablecen al reiniciar.
 - Sections distribuye las secciones según el ancho disponible, hasta dos columnas. La cantidad real depende del viewport y de la barra lateral.
 
+## Mushroom Template Card
+
+En Casa, `custom:mushroom-template-card` se utiliza para el resumen de luces/modo/temperatura y el estado de la ventana. El resumen abre Luces; la ventana abre el pop-up del salón y una pulsación larga muestra los detalles. La ventana distingue abierta, cerrada y sin datos. El resumen indica luces sin datos cuando están `unknown` o `unavailable`.
+
+Se usa la Template Card moderna de Mushroom 5+, basada en Tile. Hereda fondos, bordes, radios y textos del tema Home Assistant; `color: primary` aplica el acento de Arrel en ambos modos y la alerta usa `var(--warning-color)`. No necesita Mushroom Themes ni card-mod. Las variables antiguas `mush-*` no afectan a esta tarjeta. Esta configuración usa `color` e `icon_tap_action`, no las opciones legacy `icon_color` y `layout`.
+
+Para añadir una tarjeta similar:
+
+```yaml
+type: custom:mushroom-template-card
+entity: input_boolean.arrel_demo_luz_salon
+primary: Luz del salón
+secondary: "{{ 'Encendida' if is_state(entity, 'on') else 'Apagada' if is_state(entity, 'off') else 'Sin datos' }}"
+icon: mdi:lightbulb-outline
+color: "{{ 'primary' if is_state(entity, 'on') else 'disabled' }}"
+tap_action:
+  action: more-info
+icon_tap_action:
+  action: toggle
+```
+
+Si cambias las entidades del resumen, actualiza también su lista `entity_id`, que controla qué cambios disparan las plantillas. Si cambias la URL del dashboard, ajusta las acciones de navegación del resumen además de las rutas de Navbar Card. Los hashes de habitación deben corresponder a un pop-up de la misma vista.
+
 ## Añadir habitaciones y entidades
 
 La vista Casa contiene un botón de acceso y un `card_type: pop-up` por habitación. Cada pop-up tiene un `hash` único (`#salon`, `#cocina`, `#dormitorio`) y sus entidades están agrupadas dentro de `cards`. Se cierran con la X; prueba también Atrás en el móvil y Escape en escritorio.
@@ -107,7 +130,7 @@ Usa una versión de Navbar Card que incluya plantillas y `layout.auto_padding`; 
 
 ## Actualizar desde el prototipo anterior
 
-Actualiza el tema desde HACS (o reemplaza su archivo manualmente), ejecuta `frontend.reload_themes` e instala Bubble Card y Navbar Card. Reemplaza también `/config/dashboards/arrel-demo.yaml` con este ejemplo y recarga el dashboard. **HACS no actualiza el dashboard de ejemplo.** Si ya lo has personalizado, integra la plantilla y la tarjeta de navegación en tus vistas en lugar de sobrescribir tus cambios. El paquete de ayudantes no ha cambiado.
+Actualiza el tema desde HACS (o reemplaza su archivo manualmente), ejecuta `frontend.reload_themes` e instala Bubble Card, Navbar Card y Mushroom. Reemplaza también `/config/dashboards/arrel-demo.yaml` con este ejemplo y recarga el dashboard. **HACS no actualiza el dashboard de ejemplo.** Si ya lo has personalizado, integra la plantilla y la tarjeta de navegación en tus vistas en lugar de sobrescribir tus cambios. El paquete de ayudantes no ha cambiado.
 
 ## Validación en tus pantallas
 
@@ -125,7 +148,7 @@ Para modificar colores, edita `themes/arrel.yaml` y ejecuta `frontend.reload_the
 
 ## Publicar y versionar
 
-Consulta [PUBLISHING.md](PUBLISHING.md) para publicar versiones. La siguiente versión propuesta es `v0.3.0`; no se ha creado el tag ni la release. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
+Consulta [PUBLISHING.md](PUBLISHING.md) para publicar versiones. La siguiente versión propuesta es `v0.4.0`; no se ha creado el tag ni la release. Los cambios se registran en [CHANGELOG.md](CHANGELOG.md).
 
 ## Retirada
 
@@ -143,3 +166,5 @@ Si instalaste el tema con HACS, retíralo desde HACS. Para la instalación manua
 - [Navbar Card: espacio para la navegación](https://joseluis9595.github.io/lovelace-navbar-card/docs/configuration/layout/)
 
 - [Bubble Card: configuración oficial](https://github.com/Clooos/Bubble-Card#readme)
+
+- [Mushroom Template Card: configuración y temas](https://github.com/piitaya/lovelace-mushroom/blob/main/docs/cards/template.md)

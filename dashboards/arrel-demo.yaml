@@ -1,5 +1,5 @@
-# Requiere Bubble Card >= 3.2.0 y Navbar Card.
-# Los pop-ups de habitaciones pertenecen a Casa; sus hashes son únicos.
+# Requiere Bubble Card >= 3.2.0, Navbar Card y Mushroom >= 5.
+# Si cambia la URL del dashboard, ajustar navbar y acciones Mushroom.
 title: Arrel · Pruebas
 navbar-templates:
   arrel_navigation:
@@ -82,28 +82,51 @@ views:
     cards:
     - type: custom:navbar-card
       template: arrel_navigation
-    - type: markdown
-      content: |
-        # Tu casa, de un vistazo
+    - type: custom:mushroom-template-card
+      primary: Tu casa, de un vistazo
+      secondary: |-
         {% set luces = ['input_boolean.arrel_demo_luz_salon', 'input_boolean.arrel_demo_luz_cocina', 'input_boolean.arrel_demo_luz_dormitorio'] %}
-        **{{ expand(luces) | selectattr('state', 'eq', 'on') | list | count }} luces encendidas** · {{ states('input_number.arrel_demo_temperatura') }} °C · {{ states('input_select.arrel_demo_modo') }}
+        {% set encendidas = expand(luces) | selectattr('state', 'eq', 'on') | list | count %}
+        {% set sin_datos = expand(luces) | rejectattr('state', 'in', ['on', 'off']) | list | count %}
+        {{ encendidas }} luces encendidas{% if sin_datos %} · {{ sin_datos }} sin datos{% endif %}
+        {{ states('input_select.arrel_demo_modo') }} · {{ states('input_number.arrel_demo_temperatura') }} °C
+      icon: mdi:home-outline
+      color: primary
+      multiline_secondary: true
+      entity_id:
+      - input_boolean.arrel_demo_luz_salon
+      - input_boolean.arrel_demo_luz_cocina
+      - input_boolean.arrel_demo_luz_dormitorio
+      - input_select.arrel_demo_modo
+      - input_number.arrel_demo_temperatura
+      tap_action:
+        action: navigate
+        navigation_path: /arrel-pruebas/luces
+      icon_tap_action:
+        action: navigate
+        navigation_path: /arrel-pruebas/luces
     - type: custom:bubble-card
       card_type: select
       entity: input_select.arrel_demo_modo
       name: Modo de la casa
       icon: mdi:home-outline
-    - type: conditional
-      conditions:
-      - entity: input_boolean.arrel_demo_ventana
-        state: 'on'
-      card:
-        type: custom:bubble-card
-        card_type: button
-        button_type: state
-        entity: input_boolean.arrel_demo_ventana
-        name: Ventana abierta · Salón
-        show_state: true
-        scrolling_effect: false
+    - type: custom:mushroom-template-card
+      entity: input_boolean.arrel_demo_ventana
+      primary: '{% if is_state(entity, ''on'') %}Ventana abierta{% elif is_state(entity,
+        ''off'') %}Ventana cerrada{% else %}Ventana sin datos{% endif %}'
+      secondary: Salón · Abrir controles
+      icon: '{{ ''mdi:window-open-variant'' if is_state(entity, ''on'') else ''mdi:window-closed-variant''
+        }}'
+      color: '{% if is_state(entity, ''on'') %}var(--warning-color){% elif is_state(entity,
+        ''off'') %}primary{% else %}disabled{% endif %}'
+      tap_action:
+        action: navigate
+        navigation_path: '#salon'
+      icon_tap_action:
+        action: navigate
+        navigation_path: '#salon'
+      hold_action:
+        action: more-info
   - type: grid
     cards:
     - type: custom:bubble-card
