@@ -1,0 +1,119 @@
+title: Arrel · Pruebas
+views:
+- title: Casa
+  path: casa
+  type: sections
+  max_columns: 3
+  theme: Arrel
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Resumen
+    - type: markdown
+      content: '# Tu casa, de un vistazo
+
+        {% set luces = [''input_boolean.arrel_demo_luz_salon'', ''input_boolean.arrel_demo_luz_cocina'',
+        ''input_boolean.arrel_demo_luz_dormitorio''] %}
+
+        **{{ expand(luces) | selectattr(''state'', ''eq'', ''on'') | list | count
+        }} luces encendidas** · {{ states(''input_number.arrel_demo_temperatura'')
+        }} °C · {{ states(''input_select.arrel_demo_modo'') }}
+
+        '
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - input_select.arrel_demo_modo
+    - type: conditional
+      conditions:
+      - entity: input_boolean.arrel_demo_ventana
+        state: 'on'
+      card:
+        type: markdown
+        content: '### Ventana abierta
+
+          Revisa la ventana antes de salir.'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Estancias
+    - type: tile
+      entity: input_boolean.arrel_demo_luz_salon
+      name: Salón
+      tap_action:
+        action: more-info
+      icon_tap_action:
+        action: toggle
+      grid_options:
+        columns: 12
+        rows: 1
+    - type: tile
+      entity: input_boolean.arrel_demo_luz_cocina
+      name: Cocina
+      tap_action:
+        action: more-info
+      icon_tap_action:
+        action: toggle
+      grid_options:
+        columns: 12
+        rows: 1
+    - type: tile
+      entity: input_boolean.arrel_demo_luz_dormitorio
+      name: Dormitorio
+      tap_action:
+        action: more-info
+      icon_tap_action:
+        action: toggle
+      grid_options:
+        columns: 12
+        rows: 1
+  - type: grid
+    cards:
+    - type: heading
+      heading: Confort
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - input_number.arrel_demo_consigna
+      - input_number.arrel_demo_persiana
+    - type: markdown
+      content: '**Ambiente:** {{ states("input_number.arrel_demo_temperatura") }}
+        °C
+
+
+        **Objetivo:** {{ states("input_number.arrel_demo_consigna") }} °C'
+- title: Laboratorio
+  path: laboratorio
+  type: sections
+  max_columns: 2
+  theme: Arrel
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Simulación
+    - type: markdown
+      content: Cambia estos valores y vuelve a Casa para ver el resultado. Todos los
+        controles son simulados; el modo y la consigna no ejecutan acciones.
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - input_number.arrel_demo_temperatura
+      - input_boolean.arrel_demo_ventana
+  - type: grid
+    cards:
+    - type: heading
+      heading: Pruebas visuales
+    - type: markdown
+      content: '### Lista de comprobación
+
+        - Alterna claro y oscuro desde tu perfil.
+
+        - Prueba móvil vertical y tablet horizontal.
+
+        - Comprueba textos largos y controles táctiles.
+
+        - Enciende luces y abre la ventana simulada.
+
+        - Verifica que el aviso aparece y desaparece.'

@@ -1,0 +1,55 @@
+# Solo ayudantes: no controla dispositivos ni ejecuta automatizaciones.
+input_boolean:
+  arrel_demo_luz_salon:
+    name: Luz del salón
+    icon: mdi:floor-lamp
+    initial: true
+  arrel_demo_luz_cocina:
+    name: Luz de la cocina
+    icon: mdi:ceiling-light
+    initial: false
+  arrel_demo_luz_dormitorio:
+    name: Luz del dormitorio
+    icon: mdi:lamp
+    initial: false
+  arrel_demo_ventana:
+    name: Ventana abierta
+    icon: mdi:window-open-variant
+    initial: false
+input_number:
+  arrel_demo_temperatura:
+    name: Temperatura simulada
+    icon: mdi:thermometer
+    min: 10
+    max: 35
+    step: 0.5
+    initial: 22
+    unit_of_measurement: °C
+    mode: slider
+  arrel_demo_consigna:
+    name: Temperatura deseada
+    icon: mdi:thermostat
+    min: 16
+    max: 28
+    step: 0.5
+    initial: 21
+    unit_of_measurement: °C
+    mode: slider
+  arrel_demo_persiana:
+    name: Apertura de persiana
+    icon: mdi:blinds-horizontal
+    min: 0
+    max: 100
+    step: 5
+    initial: 70
+    unit_of_measurement: '%'
+    mode: slider
+input_select:
+  arrel_demo_modo:
+    name: Modo de la casa
+    icon: mdi:home-outline
+    options:
+      - En casa
+      - Fuera
+      - Noche
+    initial: En casa
