@@ -1,26 +1,94 @@
+# Requiere Navbar Card instalado y cargado como recurso.
+# Si cambias la URL del dashboard, ajusta las cuatro rutas del template.
 title: Arrel · Pruebas
+navbar-templates:
+  arrel_navigation:
+    desktop:
+      position: left
+      mode: floating
+      min_width: 1024
+      show_labels: true
+    mobile:
+      mode: docked
+      show_labels: true
+      safe_area: true
+    layout:
+      auto_padding:
+        enabled: true
+        desktop_px: 112
+        mobile_px: 112
+    routes:
+    - url: /arrel-pruebas/casa
+      icon: mdi:home-outline
+      icon_selected: mdi:home
+      label: Casa
+    - url: /arrel-pruebas/luces
+      icon: mdi:lightbulb-outline
+      icon_selected: mdi:lightbulb
+      label: Luces
+    - url: /arrel-pruebas/confort
+      icon: mdi:thermometer
+      icon_selected: mdi:thermometer
+      label: Confort
+    - url: /arrel-pruebas/laboratorio
+      icon: mdi:tune-variant
+      icon_selected: mdi:tune
+      label: Pruebas
+    styles: |
+      /* Los colores proceden del tema Arrel en ambos modos. */
+      .navbar-card {
+        border: 1px solid var(--ha-card-border-color);
+      }
+      .navbar-card.mobile {
+        border-radius: 20px 20px 0 0;
+      }
+      .route {
+        min-width: 48px;
+        min-height: 48px;
+      }
+      .route .button {
+        border-radius: 12px;
+      }
+      .route .button.active {
+        background: var(--arrel-navigation-active-background, var(--secondary-background-color));
+      }
+      .label {
+        color: var(--secondary-text-color);
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .label.active {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .route:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 3px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .navbar-card, .route, .button, .icon, .label {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
 views:
 - title: Casa
   path: casa
   type: sections
-  max_columns: 3
+  max_columns: 2
   theme: Arrel
   sections:
   - type: grid
     cards:
+    - type: custom:navbar-card
+      template: arrel_navigation
     - type: heading
       heading: Resumen
     - type: markdown
-      content: '# Tu casa, de un vistazo
-
-        {% set luces = [''input_boolean.arrel_demo_luz_salon'', ''input_boolean.arrel_demo_luz_cocina'',
-        ''input_boolean.arrel_demo_luz_dormitorio''] %}
-
-        **{{ expand(luces) | selectattr(''state'', ''eq'', ''on'') | list | count
-        }} luces encendidas** · {{ states(''input_number.arrel_demo_temperatura'')
-        }} °C · {{ states(''input_select.arrel_demo_modo'') }}
-
-        '
+      content: |
+        # Tu casa, de un vistazo
+        {% set luces = ['input_boolean.arrel_demo_luz_salon', 'input_boolean.arrel_demo_luz_cocina', 'input_boolean.arrel_demo_luz_dormitorio'] %}
+        **{{ expand(luces) | selectattr('state', 'eq', 'on') | list | count }} luces encendidas** · {{ states('input_number.arrel_demo_temperatura') }} °C · {{ states('input_select.arrel_demo_modo') }}
     - type: entities
       show_header_toggle: false
       entities:
@@ -31,14 +99,15 @@ views:
         state: 'on'
       card:
         type: markdown
-        content: '### Ventana abierta
-
-          Revisa la ventana antes de salir.'
+        content: |-
+          ### Ventana abierta
+          Revisa la ventana antes de salir.
   - type: grid
     cards:
     - type: heading
-      heading: Estancias
-    - type: tile
+      heading: Accesos rápidos
+    - &id001
+      type: tile
       entity: input_boolean.arrel_demo_luz_salon
       name: Salón
       tap_action:
@@ -48,6 +117,25 @@ views:
       grid_options:
         columns: 12
         rows: 1
+    - &id002
+      type: markdown
+      content: |-
+        **Ambiente:** {{ states("input_number.arrel_demo_temperatura") }} °C
+
+        **Objetivo:** {{ states("input_number.arrel_demo_consigna") }} °C
+- title: Luces
+  path: luces
+  type: sections
+  max_columns: 2
+  theme: Arrel
+  sections:
+  - type: grid
+    cards:
+    - type: custom:navbar-card
+      template: arrel_navigation
+    - type: heading
+      heading: Estancias
+    - *id001
     - type: tile
       entity: input_boolean.arrel_demo_luz_cocina
       name: Cocina
@@ -68,8 +156,16 @@ views:
       grid_options:
         columns: 12
         rows: 1
+- title: Confort
+  path: confort
+  type: sections
+  max_columns: 2
+  theme: Arrel
+  sections:
   - type: grid
     cards:
+    - type: custom:navbar-card
+      template: arrel_navigation
     - type: heading
       heading: Confort
     - type: entities
@@ -77,13 +173,8 @@ views:
       entities:
       - input_number.arrel_demo_consigna
       - input_number.arrel_demo_persiana
-    - type: markdown
-      content: '**Ambiente:** {{ states("input_number.arrel_demo_temperatura") }}
-        °C
-
-
-        **Objetivo:** {{ states("input_number.arrel_demo_consigna") }} °C'
-- title: Laboratorio
+    - *id002
+- title: Pruebas
   path: laboratorio
   type: sections
   max_columns: 2
@@ -91,6 +182,8 @@ views:
   sections:
   - type: grid
     cards:
+    - type: custom:navbar-card
+      template: arrel_navigation
     - type: heading
       heading: Simulación
     - type: markdown
@@ -106,14 +199,10 @@ views:
     - type: heading
       heading: Pruebas visuales
     - type: markdown
-      content: '### Lista de comprobación
-
+      content: |-
+        ### Lista de comprobación
         - Alterna claro y oscuro desde tu perfil.
-
         - Prueba móvil vertical y tablet horizontal.
-
         - Comprueba textos largos y controles táctiles.
-
         - Enciende luces y abre la ventana simulada.
-
-        - Verifica que el aviso aparece y desaparece.'
+        - Verifica que el aviso aparece y desaparece.

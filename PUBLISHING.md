@@ -1,5 +1,9 @@
 # Publicar arreltheme-ha
 
+## Próxima versión: v0.2.0
+
+El proyecto utiliza ahora GitHub en `https://github.com/t3rr0rz0n3/arreltheme-ha`. Tras revisar y probar los cambios, haz commit y push, crea `git tag -a v0.2.0 -m "Arrel 0.2.0"` y sube `git push origin v0.2.0`. Publica una release en GitHub con ese tag y las notas de CHANGELOG.md. No se ha creado ni publicado esta versión automáticamente. Las instrucciones de Forgejo y espejos siguientes son opcionales.
+
 Forgejo puede ser el repositorio principal. HACS solo admite repositorios públicos en GitHub: una URL de Forgejo no sirve como repositorio personalizado de HACS. El manifiesto incluido prepara el tema para un espejo opcional en GitHub; no configura ni publica ningún remoto.
 
 ## Primera subida a Forgejo

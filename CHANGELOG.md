@@ -1,5 +1,16 @@
 # Historial de cambios
 
+## 0.2.0 — Sin publicar
+
+- Nueva paleta grafito/porcelana y acento azul pizarra en ambos modos.
+- Variables de tema específicas para Navbar Card.
+- Plantilla común de navegación: lateral desde 1024 px e inferior en móvil, con etiquetas y área segura.
+- Cuatro vistas: Casa, Luces, Confort y Pruebas; espacio automático para la navbar.
+- El dashboard ahora requiere Navbar Card; el tema sigue funcionando por separado.
+- Los ayudantes existentes se conservan. HACS actualiza el tema; el dashboard debe actualizarse aparte.
+
+Validación estática local; pendiente de prueba visual en Home Assistant.
+
 ## 0.1.0 — Preparada para publicar
 
 - Tema Arrel con modos claro y oscuro, tonos piedra y acento verde.
