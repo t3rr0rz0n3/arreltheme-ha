@@ -58,25 +58,34 @@ En la plantilla de pop-up, el identificador se configura en `variables.popup_id`
 
 ## Qué cambiar en el pop-up
 
-Copia el archivo completo [arrel-room-popup-paste.yaml](arrel-room-popup-paste.yaml) y edita únicamente el bloque inicial:
+La [plantilla genérica](arrel-room-popup-paste.yaml) empieza sin dispositivos. Edita solo `variables`: una entidad vacía (`"''"`) omite el control; una sección sin controles desaparece automáticamente. No edites `entities` ni el JavaScript para activar o quitar los dispositivos previstos.
+
+Ejemplo para una cocina sin luces y con un enchufe (campos que debes cambiar dentro de `variables`; conserva los demás):
 
 ```yaml
-variables:
-  popup_id: "'#room-salon'"
-  room_name: "'Salón'"
-  room_icon: "'mdi:sofa'"
-  temperature: "'sensor.salon_temperatura'"
-  humidity: "'sensor.salon_humedad'"
-  presence: "'binary_sensor.salon_presencia'"
-  window: "'binary_sensor.salon_ventana'"
-  light: "'light.salon'"
+popup_id: "'#room-cocina'"
+room_name: "'Cocina'"
+room_icon: "'mdi:countertop-outline'"
+plug_1: "'switch.enchufe_cocina'"
+plug_1_name: "'Enchufe cocina'"
 ```
 
-**Conserva ambos niveles de comillas**: las exteriores son YAML y las interiores indican texto a Config Template Card. `popup_id` incluye `#`. El resto de la tarjeta referencia estas variables; no tienes que buscar ni sustituir entidades más abajo. Evita apóstrofos dentro de estos valores, o escápalos como texto JavaScript.
+`popup_id` debe coincidir con los dos `navigation_path` de la habitación. Conserva las comillas exteriores e interiores: Config Template Card evalúa los valores como expresiones JavaScript.
 
-Para Dormitorio, duplica la tarjeta, cambia `popup_id` a `"'#room-dormitorio'"`, nombre, icono y las entidades de los controles que conserves. Repite para cada nueva habitación. Si falta un dispositivo, elimina su control de `card.cards`, su referencia de `entities` y su variable.
+| Campos | Uso |
+| --- | --- |
+| `light_1`, `light_2`, `light_3` | Hasta tres luces regulables opcionales. |
+| `light_1_name`, `light_2_name`, `light_3_name` | Nombres de esas luces. |
+| `plug_1`, `plug_2` | Hasta dos enchufes o interruptores opcionales. |
+| `plug_1_name`, `plug_2_name` | Nombres de los enchufes; ninguno está ligado a un aspirador. |
+| `temperature`, `humidity`, `presence`, `window` | Sensores opcionales e independientes. |
+| `window_name` | Nombre del contacto, por ejemplo Ventana o Puerta. |
+| `climate`, `climate_window` | Termostato y su contacto opcional; solo necesitas Better Thermostat UI Card si rellenas `climate`. |
+| `purifier` | Ventilador/purificador opcional con control de velocidad. |
 
-**La habitación y el pop-up son tarjetas independientes.** Configura sus entidades en ambas tarjetas. No hay un archivo externo ni un build. Las variables son locales a cada copia; no definas variables globales de Config Template Card con los mismos nombres.
+Para desactivar un dispositivo vuelve a poner su entidad en `"''"`. Los nombres no activan controles por sí solos. Las parejas se reorganizan automáticamente y el último botón impar queda a ancho completo. Si todo está vacío aparece una indicación de configuración. Una entidad configurada pero no disponible conserva su control para que puedas detectar el problema.
+
+La habitación y el pop-up siguen siendo independientes: configura sus entidades en ambas tarjetas. No hay build ni archivo externo. No definas variables globales de Config Template Card con los mismos nombres.
 
 ## Añadir o quitar habitaciones
 
@@ -149,12 +158,6 @@ Referencia: [Better Thermostat UI Card — configuración y colores](https://git
 
 ## Pop-ups con dos botones por fila
 
-La [plantilla del pop-up](arrel-room-popup-paste.yaml) incluye el salón completo: Luz Sofa y Luz Aux en una fila; Leds Tv a ancho completo; temperatura/humedad y presencia/ventana en dos filas; dos enchufes juntos; termostato y purificador a ancho completo. Requiere también Better Thermostat UI Card si conservas su sección.
+Los controles configurados se agrupan por parejas dentro de Iluminación, Ambiente y Enchufes. Termostato y purificador quedan a ancho completo. La plantilla ofrece tres huecos para luces y dos para enchufes; añadir más requiere ampliar las variables, las referencias de `entities` y la lista correspondiente en el JavaScript. No es necesario hacerlo para quitar dispositivos.
 
-Edita las entidades en `variables`: `light`, `light_aux`, `light_tv`, `temperature`, `humidity`, `presence`, `window`, `plug_vacuum`, `plug_tv`, `climate`, `climate_window` y `purifier`. `window` conserva el contacto de puerta de tu ejemplo, mientras que `climate_window` es el contacto de ventana del termostato: son independientes. Cambia el nombre «Ventana» por «Puerta» si representa la puerta de entrada.
-
-Para añadir otra pareja, duplica un bloque `horizontal-stack`, cambia los nombres y añade las nuevas variables y sus referencias a `entities`. Para quitar un dispositivo, elimina su tarjeta dentro de la fila, su variable y su entrada en `entities`; elimina también cualquier fila que quede vacía. Los títulos y nombres de los controles se editan en sus campos `name`.
-
-Las acciones usan `tap_action: {action: toggle}` y `button_action: {tap_action: {action: toggle}}`. Los enchufes son `switch`, sin opciones de slider. El purificador utiliza `features: [{type: fan-speed}]`; no lleva opciones de Bubble Card dentro de la función Tile. [Referencia de fan-speed](https://www.home-assistant.io/dashboards/features/#fan-speed).
-
-Pega el archivo actualizado en tu tarjeta manual conservando las variables que ya personalizaste. No necesitas actualizar el tema para este cambio de distribución. Prueba a ancho móvil: nombres largos, ambos sliders, enchufes, termostato y velocidad del ventilador. Las acciones controlan tus dispositivos reales. Comprueba que las actualizaciones no cierren el pop-up; Config Template Card recrea su contenido al cambiar una entidad observada.
+Para probar, configura un solo enchufe: no deben aparecer Iluminación ni Ambiente. Añade otro enchufe y comprueba la fila de dos. Vacía ambos y comprueba que desaparece la sección. Revisa móvil y claro/oscuro. Comprueba también que las actualizaciones no cierren el pop-up: Config Template Card recrea su contenido cuando cambia una entidad observada.

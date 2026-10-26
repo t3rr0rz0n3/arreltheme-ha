@@ -1,5 +1,10 @@
 # Historial de cambios
 
+## 0.6.5 — Sin publicar
+
+- Pop-up genérico con dispositivos opcionales y nombres de luces/enchufes editables.
+- Omite controles y secciones vacías y reorganiza las filas de dos automáticamente.
+
 ## 0.6.4 — Sin publicar
 
 - Pop-up de salón con parejas de botones en horizontal-stack y entidades centralizadas.

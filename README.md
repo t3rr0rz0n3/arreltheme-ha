@@ -214,6 +214,6 @@ Para probar: actualiza el tema si todavía tienes una versión anterior, ejecuta
 
 Referencia: [Better Thermostat UI Card — configuración y colores](https://github.com/KartoffelToby/better-thermostat-ui-card#readme).
 
-### Distribución de controles en los pop-ups
+### Pop-up genérico por habitación
 
-La [plantilla de salón](cards/arrel-room-popup-paste.yaml) agrupa los botones en filas de dos con `horizontal-stack`. Incluye tres luces regulables, ambiente, dos enchufes, termostato y purificador. Edita sus entidades en `variables`; elimina las secciones que no uses. El termostato requiere Better Thermostat UI Card. Consulta [configuración y pruebas](cards/README.md#pop-ups-con-dos-botones-por-fila).
+La [plantilla](cards/arrel-room-popup-paste.yaml) tiene dispositivos opcionales: deja la entidad en `"''"` para omitir un control. Si no tienes luces en la cocina, deja `light_1`, `light_2` y `light_3` vacíos. Los enchufes son `plug_1` y `plug_2`, con sus nombres editables; ninguno está ligado a un aparato concreto. Las secciones vacías desaparecen y los botones se agrupan por parejas automáticamente. Better Thermostat UI Card solo es necesario si configuras `climate`. Consulta [los campos y el ejemplo de cocina](cards/README.md#qué-cambiar-en-el-pop-up).

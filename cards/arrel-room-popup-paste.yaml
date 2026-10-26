@@ -1,34 +1,41 @@
-# COPIA TODO EN UNA TARJETA MANUAL; duplica para cada habitación.
-# Requiere Bubble Card >= 3.2.0, Config Template Card y Better Thermostat UI Card.
-# EDITA variables. popup_id debe coincidir con navigation_path de la habitación.
-# Dos botones por fila; controles complejos y botones impares a ancho completo.
+# COPIA TODO EN UNA TARJETA MANUAL. Edita solo variables.
+# Requiere Bubble Card >= 3.2.0 y Config Template Card.
+# Better Thermostat UI Card solo si configuras climate.
+# Una entidad vacía ("''") omite el control y, si procede, su sección.
+# Tres luces y dos enchufes opcionales, agrupados en filas de dos.
 type: custom:config-template-card
 variables:
-  popup_id: "'#room-salon'"
-  room_name: "'Salón'"
-  room_icon: "'mdi:sofa'"
-  temperature: "'sensor.temperature_menjador_zigbee_temperature'"
-  humidity: "'sensor.temperature_menjador_zigbee_humidity'"
-  presence: "'binary_sensor.presence_menjador_zigbee_occupancy'"
-  window: "'binary_sensor.door_casa_zigbee_contact'"
-  light: "'light.bulb_menjador_sofa_zigbee'"
-  light_aux: "'light.bulb_menjador_aux_zigbee'"
-  light_tv: "'light.leds_tv_zigbee'"
-  plug_vacuum: "'switch.smartplug_salon_vacuum_tuya'"
-  plug_tv: "'switch.smartplug_salon_tv_tuya'"
-  climate: "'climate.termostat_menjador_zigbee'"
-  climate_window: "'binary_sensor.window_menjador_zigbee_contact'"
-  purifier: "'fan.xiaomi_cpa4_9375_air_purifier'"
+  popup_id: "'#room-cocina'"
+  room_name: "'Cocina'"
+  room_icon: "'mdi:countertop-outline'"
+  temperature: "''"
+  humidity: "''"
+  presence: "''"
+  window: "''"
+  light_1: "''"
+  light_2: "''"
+  light_3: "''"
+  plug_1: "''"
+  plug_2: "''"
+  climate: "''"
+  climate_window: "''"
+  purifier: "''"
+  light_1_name: "'Luz 1'"
+  light_2_name: "'Luz 2'"
+  light_3_name: "'Luz 3'"
+  plug_1_name: "'Enchufe 1'"
+  plug_2_name: "'Enchufe 2'"
+  window_name: "'Ventana'"
 entities:
 - ${temperature}
 - ${humidity}
 - ${presence}
 - ${window}
-- ${light}
-- ${light_aux}
-- ${light_tv}
-- ${plug_vacuum}
-- ${plug_tv}
+- ${light_1}
+- ${light_2}
+- ${light_3}
+- ${plug_1}
+- ${plug_2}
 - ${climate}
 - ${climate_window}
 - ${purifier}
@@ -39,160 +46,49 @@ card:
   name: ${room_name}
   icon: ${room_icon}
   show_close_button: true
-  cards:
-  - type: custom:bubble-card
-    card_type: separator
-    name: Iluminación
-    icon: mdi:lightbulb-outline
-  - type: horizontal-stack
-    cards:
-    - type: custom:bubble-card
-      card_type: button
-      button_type: slider
-      slider_value_position: right
-      slider_live_update: false
-      styles: |
-        .bubble-button-card-container {
-          background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
-          box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+  cards: |-
+    ${(() => {
+      const result = [];
+      const present = entity => typeof entity === 'string' && entity.trim() !== '';
+      const separator = (name, icon) => ({type: 'custom:bubble-card', card_type: 'separator', name, icon});
+      const button = (entity, name, kind) => {
+        const config = {type: 'custom:bubble-card', card_type: 'button', button_type: kind,
+          entity, name, show_state: true, scrolling_effect: false};
+        if (kind !== 'state') {
+          config.tap_action = {action: 'toggle'};
+          config.button_action = {tap_action: {action: 'toggle'}};
         }
-      entity: ${light}
-      name: Luz Sofa
-      show_state: true
-      scrolling_effect: false
-      tap_action:
-        action: toggle
-      button_action:
-        tap_action:
-          action: toggle
-      state_content: state
-    - type: custom:bubble-card
-      card_type: button
-      button_type: slider
-      slider_value_position: right
-      slider_live_update: false
-      styles: |
-        .bubble-button-card-container {
-          background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
-          box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+        if (kind === 'slider') {
+          config.slider_value_position = 'right';
+          config.slider_live_update = false;
+          config.styles = '.bubble-button-card-container { background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important; box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important; }';
         }
-      entity: ${light_aux}
-      name: Luz Aux
-      show_state: true
-      scrolling_effect: false
-      tap_action:
-        action: toggle
-      button_action:
-        tap_action:
-          action: toggle
-      state_content: state
-  - type: custom:bubble-card
-    card_type: button
-    button_type: slider
-    slider_value_position: right
-    slider_live_update: false
-    styles: |
-      .bubble-button-card-container {
-        background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
-        box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+        return config;
+      };
+      const section = (name, icon, entries, kind) => {
+        const items = entries.filter(([entity]) => present(entity)).map(([entity, label]) => button(entity, label, kind));
+        if (!items.length) return;
+        result.push(separator(name, icon));
+        for (let i = 0; i < items.length; i += 2) {
+          const pair = items.slice(i, i + 2);
+          result.push(pair.length === 2 ? {type: 'horizontal-stack', cards: pair} : pair[0]);
+        }
+      };
+      section('Iluminación', 'mdi:lightbulb-outline', [[light_1, light_1_name], [light_2, light_2_name], [light_3, light_3_name]], 'slider');
+      section('Ambiente', 'mdi:thermometer', [[temperature, 'Temperatura'], [humidity, 'Humedad'], [presence, 'Presencia'], [window, window_name]], 'state');
+      section('Enchufes', 'mdi:power-plug', [[plug_1, plug_1_name], [plug_2, plug_2_name]], 'switch');
+      if (present(climate)) {
+        const thermostat = {type: 'custom:better-thermostat-normal-climate-card', entity: climate,
+          name: 'Termostat', low_battery_threshold: 10, show_current_as_primary: false,
+          show_secondary: true, colors: {heat: 'deep-purple'}};
+        if (present(climate_window)) thermostat.window_sensor = climate_window;
+        if (present(humidity)) thermostat.humidity_sensor = humidity;
+        result.push(separator('Calefacción', 'mdi:heating-coil'), thermostat);
       }
-    entity: ${light_tv}
-    name: Leds Tv
-    show_state: true
-    scrolling_effect: false
-    tap_action:
-      action: toggle
-    button_action:
-      tap_action:
-        action: toggle
-    state_content: state
-  - type: custom:bubble-card
-    card_type: separator
-    name: Ambiente
-    icon: mdi:thermometer
-  - type: horizontal-stack
-    cards:
-    - type: custom:bubble-card
-      card_type: button
-      button_type: state
-      entity: ${temperature}
-      name: Temperatura
-      show_state: true
-      scrolling_effect: false
-    - type: custom:bubble-card
-      card_type: button
-      button_type: state
-      entity: ${humidity}
-      name: Humedad
-      show_state: true
-      scrolling_effect: false
-  - type: horizontal-stack
-    cards:
-    - type: custom:bubble-card
-      card_type: button
-      button_type: state
-      entity: ${presence}
-      name: Presencia
-      show_state: true
-      scrolling_effect: false
-    - type: custom:bubble-card
-      card_type: button
-      button_type: state
-      entity: ${window}
-      name: Ventana
-      show_state: true
-      scrolling_effect: false
-  - type: custom:bubble-card
-    card_type: separator
-    name: Enchufes
-    icon: mdi:power-plug
-  - type: horizontal-stack
-    cards:
-    - type: custom:bubble-card
-      card_type: button
-      button_type: switch
-      entity: ${plug_vacuum}
-      name: Enchufe Mayormono
-      show_state: true
-      scrolling_effect: false
-      tap_action:
-        action: toggle
-      button_action:
-        tap_action:
-          action: toggle
-      state_content: state
-    - type: custom:bubble-card
-      card_type: button
-      button_type: switch
-      entity: ${plug_tv}
-      name: Enchufe TV
-      show_state: true
-      scrolling_effect: false
-      tap_action:
-        action: toggle
-      button_action:
-        tap_action:
-          action: toggle
-      state_content: state
-  - type: custom:bubble-card
-    card_type: separator
-    name: Calefacció
-    icon: mdi:heating-coil
-  - type: custom:better-thermostat-normal-climate-card
-    entity: ${climate}
-    name: Termostat
-    window_sensor: ${climate_window}
-    humidity_sensor: ${humidity}
-    low_battery_threshold: 10
-    show_current_as_primary: false
-    show_secondary: true
-    colors:
-      heat: deep-purple
-  - type: custom:bubble-card
-    card_type: separator
-    name: Purificador de aire
-    icon: mdi:air-purifier
-  - type: tile
-    entity: ${purifier}
-    features:
-    - type: fan-speed
+      if (present(purifier)) {
+        result.push(separator('Purificador de aire', 'mdi:air-purifier'),
+          {type: 'tile', entity: purifier, features: [{type: 'fan-speed'}]});
+      }
+      if (!result.length) result.push({type: 'markdown', content: 'Configura las entidades en variables para añadir controles a esta habitación.'});
+      return result;
+    })()}
