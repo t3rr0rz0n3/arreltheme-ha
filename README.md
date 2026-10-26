@@ -214,6 +214,6 @@ Para probar: actualiza el tema si todavía tienes una versión anterior, ejecuta
 
 Referencia: [Better Thermostat UI Card — configuración y colores](https://github.com/KartoffelToby/better-thermostat-ui-card#readme).
 
-### Pop-up genérico por habitación
+### Pop-up básico por habitación
 
-La [plantilla](cards/arrel-room-popup-paste.yaml) tiene dispositivos opcionales: deja la entidad en `"''"` para omitir un control. Si no tienes luces en la cocina, deja `light_1`, `light_2` y `light_3` vacíos. Los enchufes son `plug_1` y `plug_2`, con sus nombres editables; ninguno está ligado a un aparato concreto. Las secciones vacías desaparecen y los botones se agrupan por parejas automáticamente. Better Thermostat UI Card solo es necesario si configuras `climate`. Consulta [los campos y el ejemplo de cocina](cards/README.md#qué-cambiar-en-el-pop-up).
+La [plantilla](cards/arrel-room-popup-paste.yaml) contiene una bombilla regulable, temperatura, puerta, ventana y presencia. Edita sus entidades en `variables`. El resto se añade a mano dentro de `card.cards`, sin secciones dinámicas. Los sensores se distribuyen de dos en dos. Requiere Bubble Card y Config Template Card; Better Thermostat solo si añades su tarjeta. Consulta [los campos y los pasos](cards/README.md#qué-cambiar-en-el-pop-up).

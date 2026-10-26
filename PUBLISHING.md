@@ -8,11 +8,11 @@ Los tags locales llegan a v0.6.4. Tras probar y revisar los cambios, ejecuta des
 git status --short
 git diff --check
 git add AGENTS.md cards/ dashboards/ themes/ README.md CHANGELOG.md PUBLISHING.md
-git commit -m "Make room popup devices optional"
+git commit -m "Simplify room popup to basic controls"
 git push origin HEAD
 git tag -a v0.6.5 -m "Arrel 0.6.5"
 git push origin v0.6.5
-gh release create v0.6.5 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.5" --notes "Pop-up genérico con dispositivos opcionales y secciones vacías ocultas." --latest
+gh release create v0.6.5 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.5" --notes "Pop-up básico con luz, temperatura, puerta, ventana y presencia." --latest
 ```
 
 Comprueba que `v0.6.5` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.

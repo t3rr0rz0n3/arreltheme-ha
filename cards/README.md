@@ -58,34 +58,25 @@ En la plantilla de pop-up, el identificador se configura en `variables.popup_id`
 
 ## Qué cambiar en el pop-up
 
-La [plantilla genérica](arrel-room-popup-paste.yaml) empieza sin dispositivos. Edita solo `variables`: una entidad vacía (`"''"`) omite el control; una sección sin controles desaparece automáticamente. No edites `entities` ni el JavaScript para activar o quitar los dispositivos previstos.
-
-Ejemplo para una cocina sin luces y con un enchufe (campos que debes cambiar dentro de `variables`; conserva los demás):
+La [plantilla básica](arrel-room-popup-paste.yaml) contiene una bombilla regulable, temperatura, puerta, ventana y presencia. Edita solo las variables iniciales:
 
 ```yaml
-popup_id: "'#room-cocina'"
-room_name: "'Cocina'"
-room_icon: "'mdi:countertop-outline'"
-plug_1: "'switch.enchufe_cocina'"
-plug_1_name: "'Enchufe cocina'"
+variables:
+  popup_id: "'#room-salon'"
+  room_name: "'Salón'"
+  room_icon: "'mdi:sofa'"
+  light: "'light.salon'"
+  temperature: "'sensor.salon_temperatura'"
+  door: "'binary_sensor.salon_puerta'"
+  window: "'binary_sensor.salon_ventana'"
+  presence: "'binary_sensor.salon_presencia'"
 ```
 
-`popup_id` debe coincidir con los dos `navigation_path` de la habitación. Conserva las comillas exteriores e interiores: Config Template Card evalúa los valores como expresiones JavaScript.
+Conserva ambos niveles de comillas. `popup_id` debe coincidir con los dos `navigation_path` de la habitación. Puerta y ventana son sensores independientes. No hay generación dinámica ni dispositivos ocultos: `card.cards` contiene el YAML normal de cada control.
 
-| Campos | Uso |
-| --- | --- |
-| `light_1`, `light_2`, `light_3` | Hasta tres luces regulables opcionales. |
-| `light_1_name`, `light_2_name`, `light_3_name` | Nombres de esas luces. |
-| `plug_1`, `plug_2` | Hasta dos enchufes o interruptores opcionales. |
-| `plug_1_name`, `plug_2_name` | Nombres de los enchufes; ninguno está ligado a un aspirador. |
-| `temperature`, `humidity`, `presence`, `window` | Sensores opcionales e independientes. |
-| `window_name` | Nombre del contacto, por ejemplo Ventana o Puerta. |
-| `climate`, `climate_window` | Termostato y su contacto opcional; solo necesitas Better Thermostat UI Card si rellenas `climate`. |
-| `purifier` | Ventilador/purificador opcional con control de velocidad. |
+Para añadir otros dispositivos, añade sus tarjetas manualmente dentro de `card.cards`. Si quieres centralizar su entidad, añade una variable, úsala como `${nombre_variable}` en la tarjeta y añade esa misma referencia a `entities` para que se actualice. Para quitar un dispositivo, elimina su tarjeta, su variable y su referencia de `entities`; ajusta la fila si queda vacía. Dejar una entidad vacía no oculta el control.
 
-Para desactivar un dispositivo vuelve a poner su entidad en `"''"`. Los nombres no activan controles por sí solos. Las parejas se reorganizan automáticamente y el último botón impar queda a ancho completo. Si todo está vacío aparece una indicación de configuración. Una entidad configurada pero no disponible conserva su control para que puedas detectar el problema.
-
-La habitación y el pop-up siguen siendo independientes: configura sus entidades en ambas tarjetas. No hay build ni archivo externo. No definas variables globales de Config Template Card con los mismos nombres.
+La habitación y el pop-up son independientes: configura sus entidades en ambas tarjetas. No necesitas Better Thermostat UI Card para este pop-up básico, ni ejecutar un build.
 
 ## Añadir o quitar habitaciones
 
@@ -158,6 +149,6 @@ Referencia: [Better Thermostat UI Card — configuración y colores](https://git
 
 ## Pop-ups con dos botones por fila
 
-Los controles configurados se agrupan por parejas dentro de Iluminación, Ambiente y Enchufes. Termostato y purificador quedan a ancho completo. La plantilla ofrece tres huecos para luces y dos para enchufes; añadir más requiere ampliar las variables, las referencias de `entities` y la lista correspondiente en el JavaScript. No es necesario hacerlo para quitar dispositivos.
+La bombilla ocupa una fila completa; temperatura/presencia y puerta/ventana van en parejas mediante `horizontal-stack`. Añade a mano otros controles siguiendo el mismo patrón. Los termostatos y otros controles complejos pueden ocupar el ancho completo.
 
-Para probar, configura un solo enchufe: no deben aparecer Iluminación ni Ambiente. Añade otro enchufe y comprueba la fila de dos. Vacía ambos y comprueba que desaparece la sección. Revisa móvil y claro/oscuro. Comprueba también que las actualizaciones no cierren el pop-up: Config Template Card recrea su contenido cuando cambia una entidad observada.
+Para probar, pega la plantilla, configura tus cinco entidades y abre el pop-up. Comprueba brillo, temperatura, presencia y ambos contactos, además de la legibilidad en móvil. No necesitas actualizar el tema para este cambio. Validación local del YAML; pendiente de prueba visual en Home Assistant.

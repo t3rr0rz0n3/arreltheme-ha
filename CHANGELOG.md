@@ -2,8 +2,8 @@
 
 ## 0.6.5 — Sin publicar
 
-- Pop-up genérico con dispositivos opcionales y nombres de luces/enchufes editables.
-- Omite controles y secciones vacías y reorganiza las filas de dos automáticamente.
+- Pop-up básico: una bombilla regulable, temperatura, puerta, ventana y presencia.
+- YAML explícito en filas de dos; los controles adicionales se añaden manualmente.
 
 ## 0.6.4 — Sin publicar
 
