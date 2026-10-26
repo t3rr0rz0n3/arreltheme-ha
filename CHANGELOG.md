@@ -1,5 +1,11 @@
 # Historial de cambios
 
+## 0.6.3 — Sin publicar
+
+- Ejemplo Better Thermostat normal con entidades editables, ventana, humedad y calefacción morada.
+- Superficie integrada mediante las variables nativas de Arrel, sin CSS adicional ni card-mod.
+- Guía de instalación y pruebas en el dashboard.
+
 ## 0.6.2 — Sin publicar
 
 - Luz del pop-up regulable mediante slider con porcentaje y envío al soltar.

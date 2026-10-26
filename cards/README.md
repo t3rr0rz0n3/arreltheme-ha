@@ -119,3 +119,30 @@ La plantilla de pop-up usa `button_type: slider` para la luz: mantén pulsada la
 El recorrido completo tiene un fondo ligeramente separado y una sombra interior difusa, sin borde. Actualiza el tema y ejecuta `frontend.reload_themes`; copia también el control de luz actualizado a los pop-ups ya pegados. El tema por sí solo no cambia `switch` a `slider`. Prueba 10 %, 50 % y 100 %, apagado, claro y oscuro. Comprueba que al soltar se mantiene abierto el pop-up y que el brillo real cambia.
 
 El mismo acabado se aplica a los sliders de la demo y al recorrido del reproductor de Navbar cuando se utiliza. Las luces simuladas de la demo siguen siendo interruptores porque son `input_boolean`; los controles nativos conservan su recorrido y mando propios.
+
+## Termostato Better Thermostat
+
+Copia [arrel-thermostat-paste.yaml](arrel-thermostat-paste.yaml) en **Editar dashboard → Añadir tarjeta → Manual**. Requiere **Better Thermostat UI Card** instalado desde HACS, en una versión que incluya `custom:better-thermostat-normal-climate-card`, y el tema **Arrel** seleccionado. No necesita card-mod, Config Template Card ni un build. Si utilizas la integración Better Thermostat, comprueba la compatibilidad entre las versiones de la integración y su tarjeta.
+
+El ejemplo conserva tu configuración:
+
+```yaml
+type: custom:better-thermostat-normal-climate-card
+entity: climate.termostat_menjador_zigbee
+name: Termostat
+window_sensor: binary_sensor.window_menjador_zigbee_contact
+humidity_sensor: sensor.temperature_menjador_zigbee_humidity
+low_battery_threshold: 10
+show_current_as_primary: false
+show_secondary: true
+colors:
+  heat: deep-purple
+```
+
+Modifica `entity`, `window_sensor` y `humidity_sensor` si cambias de dispositivo; `name` es el título y `low_battery_threshold` el umbral de batería baja. Se mantiene el morado para identificar calefacción. Si prefieres el acento azul de Arrel, cambia únicamente `colors.heat` a `var(--primary-color)`.
+
+La superficie usa las variables nativas del tema: `ha-card-background`, `ha-card-border-radius`, `ha-card-border-width` y `ha-card-box-shadow`. Así comparte fondo, esquinas de 24 px y ausencia de borde/sombra con las habitaciones, Bubble Card y Navbar Card, conservando el dial y los colores funcionales del termostato. No hace falta pegar CSS adicional.
+
+Para probar: actualiza el tema si todavía tienes una versión anterior, ejecuta `frontend.reload_themes`, selecciona Arrel y recarga el navegador. Añade la tarjeta y comprueba temperatura actual/objetivo, humedad, indicador de ventana y modos disponibles, en claro y oscuro y en móvil. Ajustar la consigna actúa sobre tu termostato real. Validación local del YAML y revisión del código de la tarjeta; pendiente de prueba visual en Home Assistant.
+
+Referencia: [Better Thermostat UI Card — configuración y colores](https://github.com/KartoffelToby/better-thermostat-ui-card#readme).

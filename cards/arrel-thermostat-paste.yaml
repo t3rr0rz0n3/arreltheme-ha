@@ -1,0 +1,14 @@
+# COPIA TODO EN UNA TARJETA MANUAL y selecciona el tema Arrel.
+# Requiere Better Thermostat UI Card compatible con el tipo normal.
+# El fondo, radio de 24 px y ausencia de borde/sombra se heredan del tema.
+# EDITA AQUÍ las entidades, el nombre y el umbral de batería.
+type: custom:better-thermostat-normal-climate-card
+entity: climate.termostat_menjador_zigbee
+name: Termostat
+window_sensor: binary_sensor.window_menjador_zigbee_contact
+humidity_sensor: sensor.temperature_menjador_zigbee_humidity
+low_battery_threshold: 10
+show_current_as_primary: false
+show_secondary: true
+colors:
+  heat: deep-purple
