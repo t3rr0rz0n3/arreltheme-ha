@@ -81,6 +81,10 @@ navbar-templates:
         border-radius: 16px;
         box-shadow: none;
       }
+      .media-player-progress-bar {
+        background: var(--arrel-slider-track-background, var(--secondary-background-color));
+        box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18));
+      }
       .route:focus-visible,
       .button:focus-visible {
         outline: 2px solid var(--primary-color);
@@ -252,6 +256,12 @@ views:
       - type: custom:bubble-card
         card_type: button
         button_type: slider
+        slider_value_position: right
+        styles: |
+          .bubble-button-card-container {
+            background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
+            box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+          }
         entity: input_number.arrel_demo_consigna
         name: Temperatura deseada
         show_state: true
@@ -260,6 +270,12 @@ views:
       - type: custom:bubble-card
         card_type: button
         button_type: slider
+        slider_value_position: right
+        styles: |
+          .bubble-button-card-container {
+            background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
+            box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+          }
         entity: input_number.arrel_demo_persiana
         name: Apertura de persiana
         show_state: true
@@ -392,6 +408,12 @@ views:
     - type: custom:bubble-card
       card_type: button
       button_type: slider
+      slider_value_position: right
+      styles: |
+        .bubble-button-card-container {
+          background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
+          box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+        }
       entity: input_number.arrel_demo_consigna
       name: Temperatura deseada
       show_state: true
@@ -400,6 +422,12 @@ views:
     - type: custom:bubble-card
       card_type: button
       button_type: slider
+      slider_value_position: right
+      styles: |
+        .bubble-button-card-container {
+          background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
+          box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+        }
       entity: input_number.arrel_demo_persiana
       name: Apertura de persiana
       show_state: true
@@ -425,6 +453,12 @@ views:
     - type: custom:bubble-card
       card_type: button
       button_type: slider
+      slider_value_position: right
+      styles: |
+        .bubble-button-card-container {
+          background: var(--arrel-slider-track-background, var(--secondary-background-color)) !important;
+          box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18)) !important;
+        }
       entity: input_number.arrel_demo_temperatura
       name: Temperatura simulada
       show_state: true

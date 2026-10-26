@@ -80,6 +80,10 @@ styles: |
     border-radius: 16px;
     box-shadow: none;
   }
+  .media-player-progress-bar {
+    background: var(--arrel-slider-track-background, var(--secondary-background-color));
+    box-shadow: var(--arrel-slider-track-shadow, inset 0 2px 6px rgba(0,0,0,.18));
+  }
   .route:focus-visible,
   .button:focus-visible {
     outline: 2px solid var(--primary-color);

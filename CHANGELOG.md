@@ -1,5 +1,11 @@
 # Historial de cambios
 
+## 0.6.2 — Sin publicar
+
+- Luz del pop-up regulable mediante slider con porcentaje y envío al soltar.
+- Recorrido visible con fondo diferenciado y sombra interior suave, sin bordes, en claro y oscuro.
+- Acabado compartido con sliders de la demo y recorrido del reproductor Navbar.
+
 ## 0.6.1 — Sin publicar
 
 - Navbar con el diseño de habitaciones: superficie, iconos, estados activos y menú desplegable; sin sombras en móvil ni escritorio.

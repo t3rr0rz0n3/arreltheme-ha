@@ -42,6 +42,8 @@ Arrel:
       arrel-room-background: '#ECEBE8'
       arrel-room-icon-background: '#FFFFFF'
       arrel-room-light-color: '#96702B'
+      arrel-slider-track-background: '#E2E1DE'
+      arrel-slider-track-shadow: inset 0 2px 6px rgba(24,29,40,.10)
     dark:
       primary-color: '#A6BDE7'
       accent-color: '#A6BDE7'
@@ -72,6 +74,8 @@ Arrel:
       arrel-room-background: '#252629'
       arrel-room-icon-background: '#313238'
       arrel-room-light-color: '#E4BF79'
+      arrel-slider-track-background: '#313238'
+      arrel-slider-track-shadow: inset 0 2px 6px rgba(0,0,0,.24)
   navbar-primary-color: var(--primary-color)
   navbar-background-color: var(--arrel-room-background)
   navbar-border-radius: 24px

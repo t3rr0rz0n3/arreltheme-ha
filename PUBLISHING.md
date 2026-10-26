@@ -1,21 +1,21 @@
 # Publicar arreltheme-ha
 
-## Próxima versión: v0.6.1
+## Próxima versión: v0.6.2
 
-Los tags locales llegan a v0.6.0. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
+Los tags locales llegan a v0.6.1. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
 
 ```sh
 git status --short
 git diff --check
 git add AGENTS.md cards/ dashboards/ themes/ README.md CHANGELOG.md PUBLISHING.md
-git commit -m "Match Navbar styling to Arrel room cards"
+git commit -m "Add light brightness slider and subtle track shading"
 git push origin HEAD
-git tag -a v0.6.1 -m "Arrel 0.6.1"
-git push origin v0.6.1
-gh release create v0.6.1 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.1" --notes "Navbar con el diseño de habitaciones, sin sombras y con estilos para pegar. Coherencia visual con Bubble Card y tarjetas nativas. Actualiza el tema y copia styles en tu navbar existente." --latest
+git tag -a v0.6.2 -m "Arrel 0.6.2"
+git push origin v0.6.2
+gh release create v0.6.2 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.2" --notes "Regulación de brillo en el pop-up y recorrido con sombra interior sutil. Actualiza el tema y el control de luz del pop-up." --latest
 ```
 
-Comprueba que `v0.6.1` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
+Comprueba que `v0.6.2` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
 
 Prueba primero siguiendo [la guía de tarjetas](cards/README.md#probar-en-tu-dashboard-sin-publicar). No necesitas publicar una release para comprobar los YAML.
 

@@ -111,3 +111,11 @@ Referencia de variables: [Config Template Card](https://github.com/iantrich/conf
 Usa [arrel-navbar-paste.yaml](arrel-navbar-paste.yaml). Si ya tienes una navbar, copia solo su bloque `styles` en el editor YAML de la tarjeta existente y conserva tus rutas. El ejemplo aplica la superficie de las habitaciones, radios de 24 px, fondos de iconos de 16 px, colores de texto del tema y elimina las sombras en móvil y escritorio. El menú desplegable comparte el estilo de los botones.
 
 Recarga el tema y el navegador. Comprueba que una tarjeta nativa, una Bubble Card y la navbar tienen fondos y bordes coherentes en claro y oscuro. No es necesario instalar card-mod ni Mushroom para esta navbar.
+
+## Regular el brillo de las luces
+
+La plantilla de pop-up usa `button_type: slider` para la luz: mantén pulsada la barra y arrastra; el porcentaje aparece a la derecha y se aplica al soltar. El icono permite encender/apagar. Usa una entidad `light` regulable; un `switch` o `input_boolean` solo admite encendido/apagado y debe conservar `button_type: switch`.
+
+El recorrido completo tiene un fondo ligeramente separado y una sombra interior difusa, sin borde. Actualiza el tema y ejecuta `frontend.reload_themes`; copia también el control de luz actualizado a los pop-ups ya pegados. El tema por sí solo no cambia `switch` a `slider`. Prueba 10 %, 50 % y 100 %, apagado, claro y oscuro. Comprueba que al soltar se mantiene abierto el pop-up y que el brillo real cambia.
+
+El mismo acabado se aplica a los sliders de la demo y al recorrido del reproductor de Navbar cuando se utiliza. Las luces simuladas de la demo siguen siendo interruptores porque son `input_boolean`; los controles nativos conservan su recorrido y mando propios.
