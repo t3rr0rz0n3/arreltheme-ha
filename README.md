@@ -1,6 +1,6 @@
 # Arrel · Prototipo para Home Assistant
 
-Tema en grafito y porcelana, con acento azul pizarra, bordes finos y modos claro/oscuro. Diseñado principalmente para `custom:bubble-card`, con `custom:navbar-card` para navegación general. Mushroom Template Card muestra los resúmenes. El tema funciona por sí solo; el dashboard requiere las tres colecciones y usa entidades simuladas.
+Tema en grafito y porcelana, con acento azul pizarra, superficies sin bordes y modos claro/oscuro. Diseñado principalmente para `custom:bubble-card`, con `custom:navbar-card` para navegación general. Mushroom Template Card muestra los resúmenes. El tema funciona por sí solo; el dashboard requiere las tres colecciones y usa entidades simuladas.
 
 ## Instalar solo el tema
 
@@ -171,6 +171,8 @@ Si instalaste el tema con HACS, retíralo desde HACS. Para la instalación manua
 
 ## Panel de habitaciones de dos columnas
 
-La tarjeta completa inspirada en la referencia está en [cards/arrel-rooms.yaml](cards/arrel-rooms.yaml). Edita los bloques de área y entidades; la plantilla compartida genera cada tarjeta con su pop-up. Consulta [instalación y configuración](cards/README.md). Requiere Bubble Card, Decluttering Card y card-mod. Incluye un dashboard independiente para probarlo.
+Copia [arrel-rooms-paste.yaml](cards/arrel-rooms-paste.yaml) en **Editar dashboard → Añadir tarjeta → Manual**. Edita `name`, `icon`, `entity` y `arrel_room` al principio de cada habitación.
 
-Para pegar directamente en **Añadir tarjeta → Manual**, utiliza [arrel-rooms-paste.yaml](cards/arrel-rooms-paste.yaml). Solo requiere Bubble Card y card-mod, sin `!include` ni configuración de dashboard. Consulta el método sencillo en [la guía](cards/README.md).
+Para los pop-ups instala también **Config Template Card** desde HACS. Pega [arrel-room-popup-paste.yaml](cards/arrel-room-popup-paste.yaml) como otra tarjeta manual en la misma vista, duplícala para cada habitación y cambia únicamente `variables`, incluido `popup_id`. No hay build ni configuración externa. Consulta [la guía y las pruebas en tu dashboard](cards/README.md).
+
+El tema aplica los fondos y radios de las habitaciones a las tarjetas que respetan las variables de Home Assistant, Bubble Card y Navbar. Los estilos explícitos de tarjetas personalizadas pueden prevalecer; requieren ajustar su YAML. No cambia el contenido ni la distribución de tu dashboard.

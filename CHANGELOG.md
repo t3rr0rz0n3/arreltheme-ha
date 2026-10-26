@@ -1,9 +1,18 @@
 # Historial de cambios
 
+## 0.6.0 — Sin publicar
+
+- Una plantilla de pop-up con nombre, icono, ID de apertura y entidades agrupados en variables; requiere Config Template Card.
+- Superficies compartidas con habitaciones: radios de 24 px, sin bordes y fondos de iconos de 16 px, en claro y oscuro.
+- Guía para copiar, duplicar y probar las tarjetas directamente en el dashboard.
+
+
 ## 0.5.1 — Sin publicar
 
 - Tarjeta autónoma `cards/arrel-rooms-paste.yaml` para pegar en el editor Manual.
-- Generador para expandir las habitaciones sin dependencia de Decluttering Card.
+- Entidades agrupadas al principio de cada habitación y leídas por el JavaScript.
+- Pop-ups independientes; edición directa desde el dashboard, sin generador ni archivos de variables externos.
+- Retiradas las plantillas y el dashboard de prueba del flujo anterior de habitaciones.
 - Guía simplificada para evitar confundir configuración de dashboard y de tarjeta.
 - Sin cambios visuales en el tema; actualizar HACS por sí solo no añade esta tarjeta.
 

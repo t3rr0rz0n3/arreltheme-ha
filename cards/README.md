@@ -1,82 +1,107 @@
-# Panel de habitaciones
+# Habitaciones: copiar, pegar y editar en Home Assistant
 
-Panel completo inspirado en la referencia: dos columnas, iconos elevados, estado de luces, temperatura/humedad, presencia y pop-up por habitación. Claro y oscuro siguen el tema Arrel. El icono se vuelve dorado cuando la luz está encendida; el punto es azul con presencia y gris sin ella. `▣` indica ventana abierta y `?` ventana sin datos. Los valores desconocidos se muestran como `—`.
+El **tema Arrel** pone los colores y estilos generales. Estos archivos son **ejemplos de tarjetas**, que añades a tu dashboard por separado. Una vez pegados, los editas en Home Assistant; no necesitas ejecutar scripts, generar archivos ni mantener una configuración externa.
 
-La cabecera muestra la temperatura media de los sensores disponibles (solo si usan la misma unidad) y el número de ventanas abiertas; `?` indica que faltan datos de alguna ventana. Los indicadores de cabecera son informativos. No se incluyen los desplegables de cabecera/pie de la imagen; cada tarjeta de habitación sí abre sus controles. Es una adaptación del diseño, pendiente de comprobar visualmente en Home Assistant.
+## Instalación
 
-## Método sencillo: pegar una tarjeta
+1. Instala **Bubble Card >= 3.2.0** y **Config Template Card** (`iantrich/config-template-card`) desde HACS y recarga el navegador. Config Template Card resuelve las variables del pop-up.
+2. En tu dashboard, entra en **Editar → Añadir tarjeta → Manual** y pega todo [arrel-rooms-paste.yaml](arrel-rooms-paste.yaml). Contiene Salón y Dormitorio en un stack horizontal.
+3. Añade una tarjeta manual en **la misma vista** pegando [la plantilla de pop-up](arrel-room-popup-paste.yaml). Duplícala para Dormitorio y cambia sus variables. Solo hay un archivo de ejemplo para todos los pop-ups.
+4. Edita los datos de ejemplo como se explica abajo. Selecciona el tema Arrel para usar su paleta.
 
-1. Instala **Bubble Card >= 3.2.0** y **card-mod** desde HACS, y recarga el navegador. Esta variante no necesita Decluttering Card.
-2. Abre `cards/arrel-rooms-paste.yaml` en tu editor y copia todo su contenido.
-3. En Home Assistant: Editar dashboard → Añadir tarjeta → Manual. Borra el contenido del editor y pega lo copiado. Debe empezar con `type: custom:mod-card` tras los comentarios.
-4. Sustituye las entidades de ejemplo por las tuyas utilizando «Reemplazar todas» en el editor de archivos antes de copiarlo. En esta variante expandida cada entidad aparece en varios lugares: hay que cambiar todas sus apariciones.
-5. Guarda. No necesitas copiar archivos a `/config`, editar `configuration.yaml`, usar `!include` ni registrar un nuevo dashboard. Aplica el tema Arrel al dashboard para obtener la paleta prevista.
+Estas tarjetas no requieren Decluttering Card, card-mod, `!include`, Python ni cambios en `configuration.yaml`. Actualizar el tema mediante HACS no modifica las tarjetas que has pegado.
 
-Los bloques que empiezan por `arrel-habitaciones:` sirven únicamente para `configuration.yaml`, nunca para el editor de una tarjeta. El error «No card type configured» indica que se ha pegado un bloque que no define `type`.
+## Qué cambiar en cada habitación
 
-Si prefieres cambiar los datos una sola vez, edita `arrel_rooms` en `cards/arrel-rooms.yaml` y ejecuta `python3 scripts/build_rooms_card.py` (requiere PyYAML). Vuelve a copiar el archivo generado `arrel-rooms-paste.yaml`. No edites solo la lista de cabecera de la variante expandida: esa lista ya no está vinculada a las tarjetas.
-
-## Dependencias del método con plantillas
-
-Instala desde HACS y comprueba que los recursos JavaScript están cargados:
-
-- Bubble Card >= 3.2.0 (`Clooos/Bubble-Card`).
-- Decluttering Card (`custom-cards/decluttering-card`).
-- card-mod, en una versión compatible con tu Home Assistant (`thomasloven/lovelace-card-mod`).
-- Tema Arrel actualizado. No requiere Mushroom ni Navbar para este panel independiente.
-
-## Instalación como dashboard de prueba
-
-1. Copia los dos YAML de `cards/` a `/config/cards/`.
-2. Copia `dashboards/arrel-rooms.yaml` a `/config/dashboards/`.
-3. En `/config/cards/arrel-rooms.yaml`, modifica únicamente los bloques de variables dentro de `arrel_rooms` en la cabecera. Las entidades de ejemplo no se crean automáticamente: usa entidades existentes. Las anclas YAML (`&id001`) y referencias (`*id001`) reutilizan cada bloque en la cuadrícula. Para añadir o quitar habitaciones, ajusta tanto la lista de cabecera como su instancia `custom:decluttering-card` en la cuadrícula.
-4. Añade esta entrada a tu bloque `lovelace.dashboards` existente de `configuration.yaml`:
+Abre la tarjeta de habitaciones y entra en su editor YAML. Al principio de cada elemento de `cards` encontrarás estos campos juntos:
 
 ```yaml
-arrel-habitaciones:
-  mode: yaml
-  title: Habitaciones
-  icon: mdi:floor-plan
-  show_in_sidebar: true
-  filename: dashboards/arrel-rooms.yaml
+name: Salón
+icon: mdi:sofa
+entity: sensor.salon_temperatura
+arrel_room:
+  humidity: sensor.salon_humedad
+  presence: binary_sensor.salon_presencia
+  window: binary_sensor.salon_ventana
+  light: light.salon
 ```
 
-Comprueba la configuración y reinicia para registrar el dashboard. Selecciona Arrel y prueba ambos modos.
+| Campo | Qué poner |
+| --- | --- |
+| `name` | El nombre que quieres mostrar. |
+| `icon` | El icono de la habitación, por ejemplo `mdi:sofa`. |
+| `entity` | Tu sensor de temperatura. Se usa también en el texto; solo se escribe una vez en esta habitación. |
+| `arrel_room.humidity` | Tu sensor de humedad en porcentaje. |
+| `arrel_room.presence` | Tu sensor de presencia: `on` detectada, `off` sin presencia. |
+| `arrel_room.window` | Tu sensor de ventana: `on` abierta, `off` cerrada. |
+| `arrel_room.light` | Tu luz, grupo de luces o interruptor; determina el color del icono. |
 
-La cabecera usa `arrel_rooms` como configuración de sus plantillas JavaScript locales; no es una opción estándar de Bubble Card. No hace falta editar el JavaScript.
+Copia los IDs reales desde **Herramientas para desarrolladores → Estados**. `arrel_room` es una configuración propia de este ejemplo: el JavaScript lee sus campos mediante `this.config.arrel_room`. La temperatura se lee de `this.config.entity`. **No cambies nada dentro de `styles` para personalizar las entidades.** Edita el bloque personalizado desde el editor YAML.
 
-## Configuración de una habitación
+Si no tienes humedad, presencia, ventana o luz, puedes omitir ese campo de `arrel_room`. Los sensores ausentes muestran `—`, la ventana sin datos muestra `?` y los indicadores de presencia/luz quedan inactivos. Elimina también el control correspondiente del pop-up. No hace falta configurar un área: el título usa directamente `name`.
+
+## Cómo conectar la habitación con su pop-up
+
+Justo antes de los estilos están las acciones. Cambia los **dos** `navigation_path` si cambias el identificador del pop-up:
 
 ```yaml
-type: custom:decluttering-card
-template: arrel_room
+button_action:
+  tap_action:
+    action: navigate
+    navigation_path: '#room-salon'
+tap_action:
+  action: navigate
+  navigation_path: '#room-salon'
+```
+
+En la plantilla de pop-up, el identificador se configura en `variables.popup_id`. Debe ser único en la vista y coincidir exactamente con los dos enlaces de la habitación; no necesita coincidir con un área de Home Assistant.
+
+## Qué cambiar en el pop-up
+
+Copia el archivo completo [arrel-room-popup-paste.yaml](arrel-room-popup-paste.yaml) y edita únicamente el bloque inicial:
+
+```yaml
 variables:
-  - area: salon
-  - name: Salón
-  - icon: mdi:sofa
-  - temperature: sensor.salon_temperatura
-  - humidity: sensor.salon_humedad
-  - presence: binary_sensor.salon_presencia
-  - window: binary_sensor.salon_ventana
-  - light: light.salon
+  popup_id: "'#room-salon'"
+  room_name: "'Salón'"
+  room_icon: "'mdi:sofa'"
+  temperature: "'sensor.salon_temperatura'"
+  humidity: "'sensor.salon_humedad'"
+  presence: "'binary_sensor.salon_presencia'"
+  window: "'binary_sensor.salon_ventana'"
+  light: "'light.salon'"
 ```
 
-`area` es el ID de área (no su nombre visible). Se usa para el hash único `#room-salon` y para buscar su nombre. El nombre `name` sirve de reserva y de cabecera del pop-up. No autodescubre entidades: así puedes escoger qué sensor y qué luz o grupo representa cada habitación. Usa IDs de área habituales (letras, números, guiones bajos); no introduzcas comillas ni código en las variables. No repitas un área en la misma vista porque duplicaría el hash.
+**Conserva ambos niveles de comillas**: las exteriores son YAML y las interiores indican texto a Config Template Card. `popup_id` incluye `#`. El resto de la tarjeta referencia estas variables; no tienes que buscar ni sustituir entidades más abajo. Evita apóstrofos dentro de estos valores, o escápalos como texto JavaScript.
 
-Los sensores de presencia y ventana deben tener estado `on`/`off`. El grupo de luz puede ser `light` o `switch`; el botón principal es de encendido/apagado. Humedad debe estar en porcentaje. La temperatura respeta la unidad del sensor. Las cinco entidades son necesarias para el pop-up completo; si una habitación carece de alguno de esos dispositivos, crea una variante de la plantilla quitando ese control en vez de inventar una entidad.
+Para Dormitorio, duplica la tarjeta, cambia `popup_id` a `"'#room-dormitorio'"`, nombre, icono y las cinco entidades. Repite para cada nueva habitación. Si falta un dispositivo, elimina su control de `card.cards`, su referencia de `entities` y su variable.
 
-## Añadirlo a un dashboard existente
+**La habitación y el pop-up son tarjetas independientes.** Configura sus entidades en ambas tarjetas. No hay un archivo externo ni un build. Las variables son locales a cada copia; no definas variables globales de Config Template Card con los mismos nombres.
 
-En un dashboard YAML, añade en la raíz `decluttering_templates: !include ../cards/arrel-room-templates.yaml` si el dashboard vive en `/config/dashboards/`. Si ya tienes plantillas, combina ambos mapas, sin duplicar la clave. Luego añade `!include ../cards/arrel-rooms.yaml` a la lista de tarjetas de tu vista.
+## Añadir o quitar habitaciones
 
-Para un dashboard gestionado desde la interfaz, pega el contenido de `arrel-room-templates.yaml` bajo la clave raíz `decluttering_templates` en el editor de configuración sin procesar; después pega `arrel-rooms.yaml` como tarjeta manual. `!include` solo funciona en dashboards YAML, no en el editor de tarjetas.
+- Para añadir otras dos habitaciones, duplica la tarjeta de la fila y cambia los campos iniciales de cada habitación y sus enlaces.
+- Duplica también un pop-up por cada habitación nueva, cambiando su bloque `variables`.
+- Para una sola habitación, elimina el segundo elemento de `cards` en el stack horizontal y conserva solo el pop-up que uses.
+- Para quitar una habitación, elimina su bloque y su tarjeta de pop-up.
 
-Puedes colocar una sola instancia `custom:decluttering-card` en cualquier vista que tenga las plantillas definidas: incluye tanto su tarjeta como su pop-up. Para mantener el diseño de la referencia, coloca varias instancias dentro de una cuadrícula nativa de dos columnas.
+## Indicadores y comprobación
 
-## Pruebas y mantenimiento
+El icono se colorea cuando la luz está encendida. El punto indica presencia. `▣` significa ventana abierta y `?` ventana sin datos. La temperatura respeta la unidad del sensor; los valores desconocidos se muestran como `—`.
 
-Prueba a 360, 390, 768 y 1440 px, con nombres largos y zoom. Comprueba icono de luz, presencia, ventana, sensores desconocidos y cada pop-up (abrir, cerrar, Escape/Atrás y alternar luz). Prueba cambios de humedad/presencia mientras la temperatura permanece constante. Si usas Navbar, verifica que el pop-up quede por encima de ella.
+Después de guardar, comprueba que cada habitación abre su pop-up, que el botón de luz controla la entidad correcta y que los indicadores se actualizan. Los estilos dependen de selectores de Bubble Card. Validación local del YAML y de la lógica JavaScript; pendiente de prueba visual en Home Assistant.
 
-Los estilos usan selectores de Bubble Card; una actualización de esa tarjeta puede requerir ajustes. No se ha ejecutado esta tarjeta en un Home Assistant real. HACS actualiza el tema, pero estos YAML se copian aparte. Conserva tu archivo personalizado `arrel-rooms.yaml` al actualizar; los estilos compartidos están en `arrel-room-templates.yaml`.
+Referencia: [documentación oficial de Bubble Card](https://github.com/Clooos/Bubble-Card#readme).
 
-Fuentes: [Bubble Card](https://github.com/Clooos/Bubble-Card), [Decluttering Card](https://github.com/custom-cards/decluttering-card), [card-mod](https://github.com/thomasloven/lovelace-card-mod).
+## Probar en tu dashboard sin publicar
+
+1. Copia `themes/arrel.yaml` a la ubicación donde ya tienes instalado el tema y ejecuta **Herramientas para desarrolladores → Acciones → `frontend.reload_themes`**. Si prefieres mantener intacta una instalación HACS, prueba una copia del tema con otro nombre raíz y selecciónala temporalmente. Tras publicar podrás actualizar Arrel desde HACS.
+2. Selecciona Arrel en el perfil o en la vista y recarga el navegador. Los fondos compartidos, radios de 24 px y bordes eliminados se aplican mediante el tema; las tarjetas personalizadas con estilos fijos pueden ignorarlos.
+3. Instala Config Template Card y comprueba su recurso `/hacsfiles/config-template-card/config-template-card.js` si aparece «Custom element doesn't exist». Recarga el navegador después de instalarlo.
+4. En una vista de pruebas, pega la fila de habitaciones y dos copias de la plantilla de pop-up. Usa tus entidades y los IDs `#room-salon` y `#room-dormitorio`.
+5. Abre ambos pop-ups por separado. Comprueba cerrar, volver a abrir, Atrás y alternar la luz. Cambia humedad o ventana manteniendo fija la temperatura y verifica que los estados se actualicen. Comprueba también que las actualizaciones no interrumpan el pop-up abierto: Config Template Card vuelve a crear su tarjeta cuando cambia una entidad observada, por lo que este comportamiento debe validarse con tu versión de Bubble Card.
+6. Comprueba claro/oscuro y móvil/escritorio. En las tarjetas de calendario, cuenta atrás o navegación de tu dashboard que mantengan bordes o fondos propios, revisa sus opciones de estilo: el tema no puede sustituir CSS fijado dentro de una tarjeta personalizada.
+
+No hace falta reinstalar el dashboard de ejemplo ni modificar tus entidades para probar el nuevo diseño. La captura no contiene el YAML de tus tarjetas personalizadas; el tema unifica las variables comunes, pero sus ajustes particulares requieren ese YAML.
+
+Referencia de variables: [Config Template Card](https://github.com/iantrich/config-template-card#readme).

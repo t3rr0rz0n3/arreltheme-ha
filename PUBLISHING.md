@@ -1,19 +1,23 @@
 # Publicar arreltheme-ha
 
-## Próxima versión: v0.5.1
+## Próxima versión: v0.6.0
 
-Después de revisar y probar el dashboard, ejecuta desde la raíz del repositorio:
+Los tags locales llegan a v0.5.1. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
 
 ```sh
-git add cards/ scripts/build_rooms_card.py README.md CHANGELOG.md PUBLISHING.md
-git commit -m "Add paste-ready room card"
-git push origin main
-git tag -a v0.5.1 -m "Arrel 0.5.1"
-git push origin v0.5.1
-gh release create v0.5.1 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.5.1" --notes "Tarjeta de habitaciones lista para pegar en el editor Manual. Requiere Bubble Card y card-mod. Sin cambios visuales del tema." --latest
+git status --short
+git diff --check
+git add -A cards/ scripts/ dashboards/ themes/ README.md CHANGELOG.md PUBLISHING.md
+git commit -m "Unify Arrel card design and simplify popup configuration"
+git push origin HEAD
+git tag -a v0.6.0 -m "Arrel 0.6.0"
+git push origin v0.6.0
+gh release create v0.6.0 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.0" --notes "Diseño unificado con las habitaciones y plantilla única de pop-up con variables editables en el dashboard. El ejemplo de pop-up requiere Config Template Card además de Bubble Card. HACS actualiza el tema; las tarjetas se copian por separado." --latest
 ```
 
-El tag debe ser nuevo; si ya has publicado `v0.5.1`, utiliza el siguiente número y actualiza las notas. No recrees ni muevas un tag publicado. No se ejecutan estos comandos automáticamente.
+Comprueba que `v0.6.0` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
+
+Prueba primero siguiendo [la guía de tarjetas](cards/README.md#probar-en-tu-dashboard-sin-publicar). No necesitas publicar una release para comprobar los YAML.
 
 En cada entrega se facilitarán los comandos de `git add`, commit, push, tag y release correspondientes. HACS necesita la release en GitHub para ofrecer esa versión numerada. El tema y el dashboard se actualizan por separado.
 

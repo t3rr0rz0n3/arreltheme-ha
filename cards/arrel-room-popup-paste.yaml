@@ -1,0 +1,76 @@
+# COPIA TODO EN UNA TARJETA MANUAL; duplica para cada habitación.
+# Requiere Bubble Card >= 3.2.0 y Config Template Card (HACS).
+# EDITA SOLO variables. Conserva las comillas interiores y exteriores.
+# popup_id debe coincidir con los dos navigation_path de la habitación.
+type: custom:config-template-card
+variables:
+  popup_id: '''#room-salon'''
+  room_name: '''Salón'''
+  room_icon: '''mdi:sofa'''
+  temperature: '''sensor.salon_temperatura'''
+  humidity: '''sensor.salon_humedad'''
+  presence: '''binary_sensor.salon_presencia'''
+  window: '''binary_sensor.salon_ventana'''
+  light: '''light.salon'''
+entities:
+- ${temperature}
+- ${humidity}
+- ${presence}
+- ${window}
+- ${light}
+card:
+  type: custom:bubble-card
+  card_type: pop-up
+  hash: ${popup_id}
+  name: ${room_name}
+  icon: ${room_icon}
+  show_close_button: true
+  cards:
+  - type: custom:bubble-card
+    card_type: separator
+    name: Iluminación
+    icon: mdi:lightbulb-outline
+  - type: custom:bubble-card
+    card_type: button
+    button_type: switch
+    entity: ${light}
+    name: Luz principal
+    show_state: true
+    scrolling_effect: false
+    tap_action:
+      action: toggle
+    button_action:
+      tap_action:
+        action: toggle
+  - type: custom:bubble-card
+    card_type: separator
+    name: Ambiente
+    icon: mdi:thermometer
+  - type: custom:bubble-card
+    card_type: button
+    button_type: state
+    entity: ${temperature}
+    name: Temperatura
+    show_state: true
+    scrolling_effect: false
+  - type: custom:bubble-card
+    card_type: button
+    button_type: state
+    entity: ${humidity}
+    name: Humedad
+    show_state: true
+    scrolling_effect: false
+  - type: custom:bubble-card
+    card_type: button
+    button_type: state
+    entity: ${presence}
+    name: Presencia
+    show_state: true
+    scrolling_effect: false
+  - type: custom:bubble-card
+    card_type: button
+    button_type: state
+    entity: ${window}
+    name: Ventana
+    show_state: true
+    scrolling_effect: false

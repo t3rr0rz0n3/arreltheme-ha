@@ -37,17 +37,17 @@ navbar-templates:
     styles: |
       /* Los colores proceden del tema Arrel en ambos modos. */
       .navbar-card {
-        border: 1px solid var(--ha-card-border-color);
+        border: none;
       }
       .navbar-card.mobile {
-        border-radius: 20px 20px 0 0;
+        border-radius: 24px 24px 0 0;
       }
       .route {
         min-width: 48px;
         min-height: 48px;
       }
       .route .button {
-        border-radius: 12px;
+        border-radius: 16px;
       }
       .route .button.active {
         background: var(--arrel-navigation-active-background, var(--secondary-background-color));
