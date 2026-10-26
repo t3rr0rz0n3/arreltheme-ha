@@ -105,3 +105,9 @@ Referencia: [documentación oficial de Bubble Card](https://github.com/Clooos/Bu
 No hace falta reinstalar el dashboard de ejemplo ni modificar tus entidades para probar el nuevo diseño. La captura no contiene el YAML de tus tarjetas personalizadas; el tema unifica las variables comunes, pero sus ajustes particulares requieren ese YAML.
 
 Referencia de variables: [Config Template Card](https://github.com/iantrich/config-template-card#readme).
+
+## Navbar con el mismo diseño
+
+Usa [arrel-navbar-paste.yaml](arrel-navbar-paste.yaml). Si ya tienes una navbar, copia solo su bloque `styles` en el editor YAML de la tarjeta existente y conserva tus rutas. El ejemplo aplica la superficie de las habitaciones, radios de 24 px, fondos de iconos de 16 px, colores de texto del tema y elimina las sombras en móvil y escritorio. El menú desplegable comparte el estilo de los botones.
+
+Recarga el tema y el navegador. Comprueba que una tarjeta nativa, una Bubble Card y la navbar tienen fondos y bordes coherentes en claro y oscuro. No es necesario instalar card-mod ni Mushroom para esta navbar.

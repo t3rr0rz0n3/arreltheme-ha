@@ -169,6 +169,16 @@ Si instalaste el tema con HACS, retíralo desde HACS. Para la instalación manua
 
 - [Mushroom Template Card: configuración y temas](https://github.com/piitaya/lovelace-mushroom/blob/main/docs/cards/template.md)
 
+## Diseño común: tarjetas nativas, Bubble Card y Navbar Card
+
+Los cambios visuales de Arrel se aplican conjuntamente a estos tres grupos, en claro y oscuro: fondo de habitación, radio de 24 px, sin bordes ni sombras; los fondos de iconos usan 16 px donde la tarjeta permite configurarlos. Las tarjetas nativas conservan sus distribuciones y colores de estado funcionales. Una tarjeta con CSS propio puede sobrescribir el tema.
+
+**Navbar existente:** abre su editor YAML y copia únicamente el bloque `styles` de [arrel-navbar-paste.yaml](cards/arrel-navbar-paste.yaml). Conserva tus `routes`, acciones y posición. No añadas una segunda navbar en la misma vista. Si usas una plantilla de Navbar, cambia sus estilos una vez para todas las vistas que la referencian. Para una navbar nueva puedes pegar el archivo completo y adaptar las rutas de ejemplo a tu dashboard.
+
+Actualiza también `themes/arrel.yaml`, ejecuta `frontend.reload_themes`, selecciona Arrel y recarga el navegador. Actualizar el tema no reemplaza los estilos guardados en el YAML de tu navbar: por eso hay que copiar el bloque al actualizar una tarjeta existente. No requiere card-mod.
+
+Comprueba navbar móvil y escritorio, icono activo, menú de rutas desplegable y navegación por teclado. Revisa en la misma vista una tarjeta nativa (por ejemplo Entities o Tile), una Bubble Card y la navbar, tanto en claro como en oscuro. El dashboard de ejemplo ya incluye el mismo CSS del archivo para pegar. Las dependencias adicionales del dashboard de demostración no son necesarias para aplicar estos estilos a tus tarjetas.
+
 ## Panel de habitaciones de dos columnas
 
 Copia [arrel-rooms-paste.yaml](cards/arrel-rooms-paste.yaml) en **Editar dashboard → Añadir tarjeta → Manual**. Edita `name`, `icon`, `entity` y `arrel_room` al principio de cada habitación.

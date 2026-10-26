@@ -1,5 +1,12 @@
 # Historial de cambios
 
+## 0.6.1 — Sin publicar
+
+- Navbar con el diseño de habitaciones: superficie, iconos, estados activos y menú desplegable; sin sombras en móvil ni escritorio.
+- Ejemplo autónomo de navbar para pegar o copiar solo sus estilos conservando las rutas existentes.
+- Criterio de mantenimiento visual conjunto para tarjetas nativas, Bubble Card y Navbar Card.
+
+
 ## 0.6.0 — Sin publicar
 
 - Una plantilla de pop-up con nombre, icono, ID de apertura y entidades agrupados en variables; requiere Config Template Card.

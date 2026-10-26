@@ -1,21 +1,21 @@
 # Publicar arreltheme-ha
 
-## Próxima versión: v0.6.0
+## Próxima versión: v0.6.1
 
-Los tags locales llegan a v0.5.1. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
+Los tags locales llegan a v0.6.0. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
 
 ```sh
 git status --short
 git diff --check
-git add -A cards/ scripts/ dashboards/ themes/ README.md CHANGELOG.md PUBLISHING.md
-git commit -m "Unify Arrel card design and simplify popup configuration"
+git add AGENTS.md cards/ dashboards/ themes/ README.md CHANGELOG.md PUBLISHING.md
+git commit -m "Match Navbar styling to Arrel room cards"
 git push origin HEAD
-git tag -a v0.6.0 -m "Arrel 0.6.0"
-git push origin v0.6.0
-gh release create v0.6.0 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.0" --notes "Diseño unificado con las habitaciones y plantilla única de pop-up con variables editables en el dashboard. El ejemplo de pop-up requiere Config Template Card además de Bubble Card. HACS actualiza el tema; las tarjetas se copian por separado." --latest
+git tag -a v0.6.1 -m "Arrel 0.6.1"
+git push origin v0.6.1
+gh release create v0.6.1 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.1" --notes "Navbar con el diseño de habitaciones, sin sombras y con estilos para pegar. Coherencia visual con Bubble Card y tarjetas nativas. Actualiza el tema y copia styles en tu navbar existente." --latest
 ```
 
-Comprueba que `v0.6.0` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
+Comprueba que `v0.6.1` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
 
 Prueba primero siguiendo [la guía de tarjetas](cards/README.md#probar-en-tu-dashboard-sin-publicar). No necesitas publicar una release para comprobar los YAML.
 
