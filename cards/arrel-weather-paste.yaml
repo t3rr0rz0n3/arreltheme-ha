@@ -1,0 +1,117 @@
+# COPIA TODO EN UNA TARJETA MANUAL. Requiere Bubble Card y el tema Arrel.
+# Cambia solo entity y name; la temperatura usa esa misma entidad.
+type: custom:bubble-card
+card_type: button
+button_type: state
+entity: weather.pirateweather
+name: Mataró
+show_icon: true
+force_icon: false
+show_name: true
+show_state: true
+scrolling_effect: false
+card_layout: large
+rows: 2
+state_content:
+  - state
+  - humidity
+tap_action:
+  action: more-info
+button_action:
+  tap_action:
+    action: more-info
+grid_options:
+  columns: 12
+  rows: 2
+styles: |
+  .bubble-button-card-container {
+    position: relative !important;
+    height: 110px !important;
+    min-height: 110px !important;
+    background: var(--arrel-room-background, var(--card-background-color)) !important;
+    border-radius: 24px !important;
+    border: none !important;
+    box-shadow: none !important;
+    container-type: inline-size;
+    container-name: arrel-weather;
+  }
+  .bubble-button-card { height: 110px !important; }
+  .bubble-button-background { opacity: 0 !important; }
+  .bubble-icon-container {
+    position: absolute !important;
+    left: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    width: 56px !important;
+    height: 56px !important;
+    margin: 0 !important;
+    background: var(--arrel-room-icon-background, var(--secondary-background-color)) !important;
+    border-radius: 16px !important;
+  }
+  .bubble-icon { --mdc-icon-size: 40px; }
+  .arrel-weather-temperature {
+    position: absolute;
+    left: 88px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 140px;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    color: var(--primary-text-color);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .bubble-name-container {
+    position: absolute !important;
+    left: 244px !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  .bubble-name { font-size: 16px !important; font-weight: 600 !important; }
+  .bubble-state {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: var(--secondary-text-color) !important;
+    opacity: 1 !important;
+  }
+  @container arrel-weather (max-width: 430px) {
+    .bubble-icon-container { left: 12px !important; width: 44px !important; height: 44px !important; }
+    .bubble-icon { --mdc-icon-size: 32px; }
+    .arrel-weather-temperature { left: 68px; width: 110px; font-size: 28px; }
+    .bubble-name-container { left: 188px !important; right: 12px !important; }
+    .bubble-name { font-size: 14px !important; }
+    .bubble-state { font-size: 12px !important; }
+  }
+  @container arrel-weather (max-width: 330px) {
+    .arrel-weather-temperature { left: 64px; width: 98px; font-size: 25px; }
+    .bubble-name-container { left: 170px !important; }
+  }
+  ${(() => {
+    const container = card.querySelector('.bubble-button-card-container');
+    if (!container) return '';
+    let label = container.querySelector('.arrel-weather-temperature');
+    if (!label) {
+      label = document.createElement('span');
+      label.className = 'arrel-weather-temperature';
+      container.appendChild(label);
+    }
+    const weather = hass.states[this.config.entity];
+    const raw = weather?.attributes?.temperature;
+    const valid = weather && !['unknown', 'unavailable'].includes(weather.state)
+      && raw !== null && raw !== undefined && String(raw).trim() !== ''
+      && Number.isFinite(Number(raw));
+    const value = valid ? new Intl.NumberFormat(hass.locale?.language || hass.language || 'es',
+      {maximumFractionDigits: 1}).format(Number(raw)) : '—';
+    const unit = weather?.attributes?.temperature_unit || '°C';
+    label.textContent = value + ' ' + unit;
+    return '';
+  })()}

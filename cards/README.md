@@ -4,9 +4,9 @@ El **tema Arrel** pone los colores y estilos generales. Estos archivos son **eje
 
 ## Instalación
 
-1. Instala **Bubble Card >= 3.2.0** y **Config Template Card** (`iantrich/config-template-card`) desde HACS y recarga el navegador. Config Template Card resuelve las variables del pop-up.
+1. Instala **Bubble Card >= 3.2.0** desde HACS. El ejemplo completo de Salón también requiere **Better Thermostat UI Card** y **Mushroom**; puedes eliminar sus controles si no los usas. Recarga el navegador.
 2. En tu dashboard, entra en **Editar → Añadir tarjeta → Manual** y pega todo [arrel-rooms-paste.yaml](arrel-rooms-paste.yaml). Contiene Salón y Dormitorio en un stack horizontal.
-3. Añade una tarjeta manual en **la misma vista** pegando [la plantilla de pop-up](arrel-room-popup-paste.yaml). Duplícala para Dormitorio y cambia sus variables. Solo hay un archivo de ejemplo para todos los pop-ups.
+3. Añade una tarjeta manual en **la misma vista** pegando [la plantilla de pop-up](arrel-room-popup-paste.yaml). Duplícala para Dormitorio y cambia `hash`, nombre, icono y las entidades de sus controles. Solo hay un archivo de ejemplo para todos los pop-ups.
 4. Edita los datos de ejemplo como se explica abajo. Selecciona el tema Arrel para usar su paleta.
 
 Estas tarjetas no requieren Decluttering Card, card-mod, `!include`, Python ni cambios en `configuration.yaml`. Actualizar el tema mediante HACS no modifica las tarjetas que has pegado.
@@ -48,40 +48,39 @@ Justo antes de los estilos están las acciones. Cambia los **dos** `navigation_p
 button_action:
   tap_action:
     action: navigate
-    navigation_path: '#room-salon'
+    navigation_path: '#menjador'
 tap_action:
   action: navigate
-  navigation_path: '#room-salon'
+  navigation_path: '#menjador'
 ```
 
-En la plantilla de pop-up, el identificador se configura en `variables.popup_id`. Debe ser único en la vista y coincidir exactamente con los dos enlaces de la habitación; no necesita coincidir con un área de Home Assistant.
+En el pop-up, configura `hash: '#menjador'`. Debe ser único en la vista y coincidir con los dos `navigation_path` de la habitación. Para Dormitorio utiliza `#room-dormitorio`, que es el enlace del ejemplo de habitaciones.
 
 ## Qué cambiar en el pop-up
 
-La [plantilla básica](arrel-room-popup-paste.yaml) contiene una bombilla regulable, temperatura, puerta, ventana y presencia. Edita solo las variables iniciales:
+El [ejemplo de Salón](arrel-room-popup-paste.yaml) es YAML directo, basado en tu configuración. Empieza con:
 
 ```yaml
-variables:
-  popup_id: "'#room-salon'"
-  room_name: "'Salón'"
-  room_icon: "'mdi:sofa'"
-  light: "'light.salon'"
-  temperature: "'sensor.salon_temperatura'"
-  door: "'binary_sensor.salon_puerta'"
-  window: "'binary_sensor.salon_ventana'"
-  presence: "'binary_sensor.salon_presencia'"
+type: custom:bubble-card
+card_type: pop-up
+hash: '#menjador'
+name: Salón
+icon: mdi:sofa
+show_close_button: true
+cards:
+  # Controles del pop-up
 ```
 
-Conserva ambos niveles de comillas. `popup_id` debe coincidir con los dos `navigation_path` de la habitación. Puerta y ventana son sensores independientes. No hay generación dinámica ni dispositivos ocultos: `card.cards` contiene el YAML normal de cada control.
+Edita `hash`, `name` e `icon` y cambia el campo `entity` de cada control. En el termostato revisa también `window_sensor` y `humidity_sensor`. En el chip del filtro revisa su `entity` y la entidad escrita dentro de `content`. No hay variables ni una lista adicional de entidades que mantener, y no necesitas Config Template Card.
 
-Para añadir otros dispositivos, añade sus tarjetas manualmente dentro de `card.cards`. Si quieres centralizar su entidad, añade una variable, úsala como `${nombre_variable}` en la tarjeta y añade esa misma referencia a `entities` para que se actualice. Para quitar un dispositivo, elimina su tarjeta, su variable y su referencia de `entities`; ajusta la fila si queda vacía. Dejar una entidad vacía no oculta el control.
+Incluye tres luces, temperatura/humedad, presencia/contacto, dos enchufes, termostato, purificador y sus chips informativos. El contacto `binary_sensor.door_casa_zigbee_contact` conserva el nombre «Ventana» de tu ejemplo; cámbialo a «Puerta» si corresponde.
 
-La habitación y el pop-up son independientes: configura sus entidades en ambas tarjetas. No necesitas Better Thermostat UI Card para este pop-up básico, ni ejecutar un build.
+Para añadir un dispositivo duplica su tarjeta dentro de `cards` y cambia nombre y entidad. Para quitarlo elimina su tarjeta y, si queda vacío, su stack o separador. Puedes borrar secciones completas para dejar únicamente lo básico. Las filas `horizontal-stack` contienen dos controles; un control impar puede ir a ancho completo. La tarjeta de habitaciones y el pop-up se editan por separado.
 
 ## Añadir o quitar habitaciones
 
 - Para añadir otras dos habitaciones, duplica la tarjeta de la fila y cambia los campos iniciales de cada habitación y sus enlaces.
-- Duplica también un pop-up por cada habitación nueva, cambiando su bloque `variables`.
+- Duplica también un pop-up por cada habitación nueva, cambiando `hash`, nombre, icono y entidades.
 - Para una sola habitación, elimina el segundo elemento de `cards` en el stack horizontal y conserva solo el pop-up que uses.
 - Para quitar una habitación, elimina su bloque y su tarjeta de pop-up.
 
@@ -97,14 +96,14 @@ Referencia: [documentación oficial de Bubble Card](https://github.com/Clooos/Bu
 
 1. Copia `themes/arrel.yaml` a la ubicación donde ya tienes instalado el tema y ejecuta **Herramientas para desarrolladores → Acciones → `frontend.reload_themes`**. Si prefieres mantener intacta una instalación HACS, prueba una copia del tema con otro nombre raíz y selecciónala temporalmente. Tras publicar podrás actualizar Arrel desde HACS.
 2. Selecciona Arrel en el perfil o en la vista y recarga el navegador. Los fondos compartidos, radios de 24 px y bordes eliminados se aplican mediante el tema; las tarjetas personalizadas con estilos fijos pueden ignorarlos.
-3. Instala Config Template Card y comprueba su recurso `/hacsfiles/config-template-card/config-template-card.js` si aparece «Custom element doesn't exist». Recarga el navegador después de instalarlo.
-4. En una vista de pruebas, pega la fila de habitaciones y dos copias de la plantilla de pop-up. Usa tus entidades y los IDs `#room-salon` y `#room-dormitorio`.
-5. Abre ambos pop-ups por separado. Comprueba cerrar, volver a abrir, Atrás y alternar la luz. Cambia humedad o ventana manteniendo fija la temperatura y verifica que los estados se actualicen. Comprueba también que las actualizaciones no interrumpan el pop-up abierto: Config Template Card vuelve a crear su tarjeta cuando cambia una entidad observada, por lo que este comportamiento debe validarse con tu versión de Bubble Card.
+3. Instala las tarjetas que conserves en el pop-up: Bubble Card, Better Thermostat UI Card y Mushroom. Config Template Card ya no es necesario para este ejemplo.
+4. En una vista de pruebas pega las habitaciones y el pop-up. Comprueba que sus enlaces coinciden (`#menjador` para Salón). Si duplicas el pop-up para Dormitorio, usa `#room-dormitorio` y adapta sus controles.
+5. Abre los pop-ups, comprueba cerrar, Atrás, luces y actualizaciones de sensores. Las acciones controlan los dispositivos reales configurados.
 6. Comprueba claro/oscuro y móvil/escritorio. En las tarjetas de calendario, cuenta atrás o navegación de tu dashboard que mantengan bordes o fondos propios, revisa sus opciones de estilo: el tema no puede sustituir CSS fijado dentro de una tarjeta personalizada.
 
 No hace falta reinstalar el dashboard de ejemplo ni modificar tus entidades para probar el nuevo diseño. La captura no contiene el YAML de tus tarjetas personalizadas; el tema unifica las variables comunes, pero sus ajustes particulares requieren ese YAML.
 
-Referencia de variables: [Config Template Card](https://github.com/iantrich/config-template-card#readme).
+El pop-up es una Bubble Card directa; ya no tiene el contenedor que recreaba su contenido al cambiar sensores.
 
 ## Navbar con el mismo diseño
 
@@ -149,6 +148,12 @@ Referencia: [Better Thermostat UI Card — configuración y colores](https://git
 
 ## Pop-ups con dos botones por fila
 
-La bombilla ocupa una fila completa; temperatura/presencia y puerta/ventana van en parejas mediante `horizontal-stack`. Añade a mano otros controles siguiendo el mismo patrón. Los termostatos y otros controles complejos pueden ocupar el ancho completo.
+Conserva `horizontal-stack` para parejas de controles. El termostato, purificador y los botones impares pueden ocupar todo el ancho. Duplica o elimina los bloques directamente desde el editor YAML del dashboard. No hay generación de tarjetas ni build.
 
-Para probar, pega la plantilla, configura tus cinco entidades y abre el pop-up. Comprueba brillo, temperatura, presencia y ambos contactos, además de la legibilidad en móvil. No necesitas actualizar el tema para este cambio. Validación local del YAML; pendiente de prueba visual en Home Assistant.
+## Tiempo en una fila
+
+Pega [arrel-weather-paste.yaml](arrel-weather-paste.yaml) en una tarjeta manual. Cambia `entity` y `name` al principio: el icono queda a la izquierda, la temperatura grande en el centro y la localidad con estado/humedad a la derecha. Todo abre Más información al pulsar. No usa subbotones inferiores ni Config Template Card.
+
+La temperatura se lee de la misma entidad meteorológica y respeta `temperature_unit`; sin datos muestra `—`. El estilo comparte la superficie Arrel de las otras tarjetas. Solo cambia la composición de esta tarjeta, sin modificar Navbar ni los controles nativos.
+
+Sustituye la tarjeta meteorológica anterior completa, no solo sus estilos. Comprueba el diseño en móvil y escritorio, claro/oscuro, textos largos y temperaturas negativas. Validación local del YAML y del formateo; pendiente de prueba visual en Home Assistant.

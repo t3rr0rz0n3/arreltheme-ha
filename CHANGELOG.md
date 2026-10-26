@@ -1,5 +1,12 @@
 # Historial de cambios
 
+## 0.6.6 — Sin publicar
+
+- Tarjeta meteorológica en una fila: icono, temperatura destacada y descripción; adapta tamaños al ancho disponible.
+
+- Pop-up de Salón en YAML directo, basado en la configuración aportada; sin variables ni Config Template Card.
+- Controles en parejas, sliders con sombra suave y enlaces de Salón sincronizados con #menjador.
+
 ## 0.6.5 — Sin publicar
 
 - Pop-up básico: una bombilla regulable, temperatura, puerta, ventana y presencia.

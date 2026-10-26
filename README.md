@@ -183,7 +183,7 @@ Comprueba navbar móvil y escritorio, icono activo, menú de rutas desplegable y
 
 Copia [arrel-rooms-paste.yaml](cards/arrel-rooms-paste.yaml) en **Editar dashboard → Añadir tarjeta → Manual**. Edita `name`, `icon`, `entity` y `arrel_room` al principio de cada habitación.
 
-Para los pop-ups instala también **Config Template Card** desde HACS. Pega [arrel-room-popup-paste.yaml](cards/arrel-room-popup-paste.yaml) como otra tarjeta manual en la misma vista, duplícala para cada habitación y cambia únicamente `variables`, incluido `popup_id`. No hay build ni configuración externa. Consulta [la guía y las pruebas en tu dashboard](cards/README.md).
+Pega [arrel-room-popup-paste.yaml](cards/arrel-room-popup-paste.yaml) como otra tarjeta manual en la misma vista. Es YAML directo: edita `hash`, nombre, icono y las entidades de cada control; añade o elimina secciones a mano. El ejemplo completo usa Bubble Card, Better Thermostat UI Card y Mushroom. No necesita Config Template Card ni un build. Consulta [la guía](cards/README.md).
 
 El tema aplica los fondos y radios de las habitaciones a las tarjetas que respetan las variables de Home Assistant, Bubble Card y Navbar. Los estilos explícitos de tarjetas personalizadas pueden prevalecer; requieren ajustar su YAML. No cambia el contenido ni la distribución de tu dashboard.
 
@@ -214,6 +214,14 @@ Para probar: actualiza el tema si todavía tienes una versión anterior, ejecuta
 
 Referencia: [Better Thermostat UI Card — configuración y colores](https://github.com/KartoffelToby/better-thermostat-ui-card#readme).
 
-### Pop-up básico por habitación
+### Pop-up editable directamente
 
-La [plantilla](cards/arrel-room-popup-paste.yaml) contiene una bombilla regulable, temperatura, puerta, ventana y presencia. Edita sus entidades en `variables`. El resto se añade a mano dentro de `card.cards`, sin secciones dinámicas. Los sensores se distribuyen de dos en dos. Requiere Bubble Card y Config Template Card; Better Thermostat solo si añades su tarjeta. Consulta [los campos y los pasos](cards/README.md#qué-cambiar-en-el-pop-up).
+El [ejemplo de Salón](cards/arrel-room-popup-paste.yaml) usa `hash: '#menjador'` y tus entidades, con luces, ambiente, enchufes, termostato y purificador. Edita cada control directamente, sin variables ni Config Template Card. Elimina las secciones que no necesites y conserva los botones en parejas con `horizontal-stack`. Los dos enlaces de la habitación deben coincidir con el `hash`. Consulta [los pasos](cards/README.md#qué-cambiar-en-el-pop-up).
+
+## Tiempo en una fila
+
+Pega [cards/arrel-weather-paste.yaml](cards/arrel-weather-paste.yaml) en una tarjeta manual. Cambia `entity` y `name` al principio: el icono queda a la izquierda, la temperatura grande en el centro y la localidad con estado/humedad a la derecha. Todo abre Más información al pulsar. No usa subbotones inferiores ni Config Template Card.
+
+La temperatura se lee de la misma entidad meteorológica y respeta `temperature_unit`; sin datos muestra `—`. El estilo comparte la superficie Arrel de las otras tarjetas. Solo cambia la composición de esta tarjeta, sin modificar Navbar ni los controles nativos.
+
+Sustituye la tarjeta meteorológica anterior completa, no solo sus estilos. Comprueba el diseño en móvil y escritorio, claro/oscuro, textos largos y temperaturas negativas. Validación local del YAML y del formateo; pendiente de prueba visual en Home Assistant.

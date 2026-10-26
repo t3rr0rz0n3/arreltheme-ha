@@ -22,10 +22,10 @@ cards:
   button_action:
     tap_action:
       action: navigate
-      navigation_path: '#room-salon'
+      navigation_path: '#menjador'
   tap_action:
     action: navigate
-    navigation_path: '#room-salon'
+    navigation_path: '#menjador'
   # NO HACE FALTA EDITAR LOS ESTILOS NI EL JAVASCRIPT.
   styles: |
     .bubble-button-card-container {

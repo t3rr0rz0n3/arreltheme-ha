@@ -6,4 +6,4 @@ Mantener sincronizados los estilos de Navbar del dashboard de ejemplo y de `card
 
 Al entregar una versión, facilitar comandos de Git y pasos de prueba directa en Home Assistant. No ejecutar publicación salvo petición explícita. No afirmar validación visual sin probar en una instancia real.
 
-En los pop-ups Bubble Card, agrupar botones de dos en dos con horizontal-stack. Dejar controles complejos (termostato, purificador) y el último botón impar a ancho completo. Conservar entidades editables en variables y acciones correctamente anidadas.
+En los pop-ups Bubble Card, agrupar botones de dos en dos con horizontal-stack. Dejar controles complejos (termostato, purificador) y el último botón impar a ancho completo. En los pop-ups usar YAML directo con entidades en cada control, sin Config Template Card ni variables; conservar las acciones correctamente anidadas.
