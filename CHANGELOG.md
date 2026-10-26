@@ -1,5 +1,10 @@
 # Historial de cambios
 
+## 0.6.7 — Sin publicar
+
+- Contadores de luces, enchufes, ventanas y puertas a partir de grupos existentes; grupos anidados, deduplicación y datos incompletos.
+- Fila de tres resúmenes Bubble Card y tarjeta opcional de enchufes.
+
 ## 0.6.6 — Sin publicar
 
 - Tarjeta meteorológica en una fila: icono, temperatura destacada y descripción; adapta tamaños al ancho disponible.

@@ -1,0 +1,280 @@
+# SOLO sensores de lectura. No crea ni modifica grupos ni controla dispositivos.
+# Grupos existentes: cambia sus IDs aquí si son distintos (todas sus apariciones).
+template:
+- sensor:
+  - name: Arrel resumen luces
+    unique_id: arrel_resumen_luces
+    default_entity_id: sensor.arrel_resumen_luces
+    icon: mdi:lightbulb-group-outline
+    state: |-
+      {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+      {% macro visit(id) %}
+        {% if id not in ns.seen %}
+          {% set ns.seen = ns.seen + [id] %}
+          {% set children = state_attr(id, 'entity_id') %}
+          {% if children is iterable and children is not string %}
+            {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% for child in children %}{{ visit(child) }}{% endfor %}
+          {% else %}
+            {% set ns.total = ns.total + 1 %}
+            {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+            {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+          {% endif %}
+        {% endif %}
+      {% endmacro %}
+      {% set members = state_attr('light.home_bulbs', 'entity_id') %}
+      {% if members is iterable and members is not string and members | count > 0 %}
+      {% for member in members %}{{ visit(member) }}{% endfor %}
+      {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+      {{ ns.on }}
+    attributes:
+      source_group: light.home_bulbs
+      missing_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('light.home_bulbs', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.missing }}
+      member_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('light.home_bulbs', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.total }}
+  - name: Arrel resumen enchufes
+    unique_id: arrel_resumen_enchufes
+    default_entity_id: sensor.arrel_resumen_enchufes
+    icon: mdi:power-plug
+    state: |-
+      {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+      {% macro visit(id) %}
+        {% if id not in ns.seen %}
+          {% set ns.seen = ns.seen + [id] %}
+          {% set children = state_attr(id, 'entity_id') %}
+          {% if children is iterable and children is not string %}
+            {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% for child in children %}{{ visit(child) }}{% endfor %}
+          {% else %}
+            {% set ns.total = ns.total + 1 %}
+            {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+            {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+          {% endif %}
+        {% endif %}
+      {% endmacro %}
+      {% set members = state_attr('switch.home_plug', 'entity_id') %}
+      {% if members is iterable and members is not string and members | count > 0 %}
+      {% for member in members %}{{ visit(member) }}{% endfor %}
+      {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+      {{ ns.on }}
+    attributes:
+      source_group: switch.home_plug
+      missing_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('switch.home_plug', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.missing }}
+      member_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('switch.home_plug', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.total }}
+  - name: Arrel resumen ventanas
+    unique_id: arrel_resumen_ventanas
+    default_entity_id: sensor.arrel_resumen_ventanas
+    icon: mdi:window-open-variant
+    state: |-
+      {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+      {% macro visit(id) %}
+        {% if id not in ns.seen %}
+          {% set ns.seen = ns.seen + [id] %}
+          {% set children = state_attr(id, 'entity_id') %}
+          {% if children is iterable and children is not string %}
+            {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% for child in children %}{{ visit(child) }}{% endfor %}
+          {% else %}
+            {% set ns.total = ns.total + 1 %}
+            {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+            {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+          {% endif %}
+        {% endif %}
+      {% endmacro %}
+      {% set members = state_attr('binary_sensor.home_window', 'entity_id') %}
+      {% if members is iterable and members is not string and members | count > 0 %}
+      {% for member in members %}{{ visit(member) }}{% endfor %}
+      {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+      {{ ns.on }}
+    attributes:
+      source_group: binary_sensor.home_window
+      missing_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('binary_sensor.home_window', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.missing }}
+      member_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('binary_sensor.home_window', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.total }}
+  - name: Arrel resumen puertas
+    unique_id: arrel_resumen_puertas
+    default_entity_id: sensor.arrel_resumen_puertas
+    icon: mdi:door-closed
+    state: |-
+      {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+      {% macro visit(id) %}
+        {% if id not in ns.seen %}
+          {% set ns.seen = ns.seen + [id] %}
+          {% set children = state_attr(id, 'entity_id') %}
+          {% if children is iterable and children is not string %}
+            {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% for child in children %}{{ visit(child) }}{% endfor %}
+          {% else %}
+            {% set ns.total = ns.total + 1 %}
+            {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+            {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+          {% endif %}
+        {% endif %}
+      {% endmacro %}
+      {% set members = state_attr('binary_sensor.home_door', 'entity_id') %}
+      {% if members is iterable and members is not string and members | count > 0 %}
+      {% for member in members %}{{ visit(member) }}{% endfor %}
+      {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+      {{ ns.on }}
+    attributes:
+      source_group: binary_sensor.home_door
+      missing_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('binary_sensor.home_door', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.missing }}
+      member_count: |-
+        {% set ns = namespace(seen=[], on=0, missing=0, total=0) %}
+        {% macro visit(id) %}
+          {% if id not in ns.seen %}
+            {% set ns.seen = ns.seen + [id] %}
+            {% set children = state_attr(id, 'entity_id') %}
+            {% if children is iterable and children is not string %}
+              {% if children | count == 0 %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+              {% for child in children %}{{ visit(child) }}{% endfor %}
+            {% else %}
+              {% set ns.total = ns.total + 1 %}
+              {% if is_state(id, 'on') %}{% set ns.on = ns.on + 1 %}
+              {% elif not is_state(id, 'off') %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+            {% endif %}
+          {% endif %}
+        {% endmacro %}
+        {% set members = state_attr('binary_sensor.home_door', 'entity_id') %}
+        {% if members is iterable and members is not string and members | count > 0 %}
+        {% for member in members %}{{ visit(member) }}{% endfor %}
+        {% else %}{% set ns.missing = ns.missing + 1 %}{% endif %}
+        {{ ns.total }}

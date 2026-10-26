@@ -1,0 +1,56 @@
+# Tarjeta opcional: pega aparte o añade este bloque a la fila de resumen.
+type: custom:bubble-card
+card_type: button
+button_type: state
+entity: sensor.arrel_resumen_enchufes
+name: Enchufes
+icon: mdi:power-plug
+show_state: true
+scrolling_effect: false
+card_layout: large
+rows: 2
+tap_action:
+  action: more-info
+button_action:
+  tap_action:
+    action: more-info
+styles: |-
+  .bubble-button-card-container {
+    height: 96px !important;
+    background: var(--arrel-room-background, var(--card-background-color)) !important;
+    border-radius: 24px !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .bubble-button-card { height: 96px !important; }
+  .bubble-button-background { opacity: 0 !important; }
+  .bubble-icon-container {
+    position: absolute !important; top: 10px; left: 12px;
+    width: 28px !important; height: 28px !important; margin: 0 !important;
+    border-radius: 10px !important;
+    background: var(--arrel-room-icon-background, var(--secondary-background-color)) !important;
+  }
+  .bubble-icon { --mdc-icon-size: 20px; }
+  .bubble-name-container {
+    position: absolute !important; top: 44px; left: 12px; right: 8px;
+    width: auto !important; margin: 0 !important;
+  }
+  .bubble-name { font-size: 13px !important; font-weight: 600 !important; }
+  .bubble-state { font-size: 11px !important; white-space: normal !important; line-height: 1.2 !important; }
+  ${(() => {
+    const item = hass.states[this.config.entity];
+    const count = Number(item?.state);
+    const missing = Number(item?.attributes?.missing_count ?? 1);
+    const total = Number(item?.attributes?.member_count ?? 0);
+    const valid = item && !['unknown', 'unavailable', ''].includes(item.state) && Number.isFinite(count);
+    let text = 'Sin datos';
+    if (valid && total > 0) {
+      text = count > 0 ? count + ' encendidos' : missing > 0 ? 'Sin datos completos' : 'Todos apagados';
+      if (missing > 0 && count > 0) text += ' · ?';
+    }
+    const state = card.querySelector('.bubble-state');
+    if (state) state.textContent = text;
+    const icon = card.querySelector('.bubble-icon');
+    if (icon) icon.style.setProperty('color', valid && (count > 0 || missing > 0) ? 'var(--warning-color)' : 'var(--primary-color)', 'important');
+    return '';
+  })()}

@@ -225,3 +225,25 @@ Pega [cards/arrel-weather-paste.yaml](cards/arrel-weather-paste.yaml) en una tar
 La temperatura se lee de la misma entidad meteorológica y respeta `temperature_unit`; sin datos muestra `—`. El estilo comparte la superficie Arrel de las otras tarjetas. Solo cambia la composición de esta tarjeta, sin modificar Navbar ni los controles nativos.
 
 Sustituye la tarjeta meteorológica anterior completa, no solo sus estilos. Comprueba el diseño en móvil y escritorio, claro/oscuro, textos largos y temperaturas negativas. Validación local del YAML y del formateo; pendiente de prueba visual en Home Assistant.
+
+## Resumen de grupos existentes
+
+No modifiques tus grupos si ya contienen los dispositivos correctos. Se leen `light.home_bulbs`, `switch.home_plug`, `binary_sensor.home_window` y `binary_sensor.home_door`. Confirma que esos son sus IDs reales y que tienen el atributo `entity_id`; si difieren, sustituye todas las apariciones del ID en `packages/arrel_summary.yaml`. No se crean grupos, automatizaciones ni acciones sobre tus dispositivos.
+
+1. Copia [arrel_summary.yaml](packages/arrel_summary.yaml) a `/config/packages/arrel_summary.yaml` si ya cargas paquetes desde esa carpeta.
+2. Si todavía no cargas paquetes, integra esto en el bloque `homeassistant` existente de `configuration.yaml`, sin duplicarlo:
+
+   ```yaml
+   homeassistant:
+     packages: !include_dir_named packages
+   ```
+
+3. Comprueba la configuración y reinicia Home Assistant. Si ya utilizas otra organización de paquetes, conserva esa estructura y añade allí el archivo. Esto se hace una vez; después gestionas los miembros desde tus grupos habituales.
+4. Comprueba en Estados que existen `sensor.arrel_resumen_luces`, `sensor.arrel_resumen_enchufes`, `sensor.arrel_resumen_ventanas` y `sensor.arrel_resumen_puertas`. Si había IDs ocupados, adapta los `entity` de las tarjetas a los IDs asignados.
+5. Pega [arrel-summary-paste.yaml](cards/arrel-summary-paste.yaml) como tarjeta manual: contiene tres botones. Opcionalmente añade [arrel-plugs-summary-paste.yaml](cards/arrel-plugs-summary-paste.yaml) como otra tarjeta.
+
+Los sensores cuentan miembros `on`, también dentro de grupos anidados, sin duplicar IDs. Los atributos `missing_count` y `member_count` permiten distinguir datos incompletos. Un grupo inexistente, vacío o sin lista de miembros muestra «Sin datos». Si hay miembros desconocidos no se afirma que todo esté apagado/cerrado: se muestra «Sin datos completos» o el recuento conocido con `?`. Un contacto `on` se interpreta como abierto. No mezcles luces individuales con grupos de una integración que no expongan sus miembros: podrían contarse como dispositivos distintos.
+
+Pulsar un resumen solo abre Más información del contador. No enciende ni apaga el grupo. Prueba dos dispositivos encendidos, apaga uno mientras el grupo sigue `on` y comprueba que el contador baja; prueba contactos abiertos, todos cerrados y uno no disponible. Comprueba también los textos a ancho móvil y los dos modos del tema. Validación local de plantillas y YAML; pendiente de prueba real en Home Assistant.
+
+Referencia: [sensores Template de Home Assistant](https://www.home-assistant.io/integrations/template/).
