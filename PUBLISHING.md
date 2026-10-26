@@ -1,21 +1,21 @@
 # Publicar arreltheme-ha
 
-## Próxima versión: v0.6.3
+## Próxima versión: v0.6.4
 
-Los tags locales llegan a v0.6.2. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
+Los tags locales llegan a v0.6.3. Tras probar y revisar los cambios, ejecuta desde la raíz del repositorio (no se ejecutan automáticamente):
 
 ```sh
 git status --short
 git diff --check
 git add AGENTS.md cards/ dashboards/ themes/ README.md CHANGELOG.md PUBLISHING.md
-git commit -m "Add Arrel Better Thermostat card example"
+git commit -m "Arrange popup controls in horizontal pairs"
 git push origin HEAD
-git tag -a v0.6.3 -m "Arrel 0.6.3"
-git push origin v0.6.3
-gh release create v0.6.3 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.3" --notes "Tarjeta Better Thermostat integrada con el tema Arrel y guía para pegarla directamente en el dashboard." --latest
+git tag -a v0.6.4 -m "Arrel 0.6.4"
+git push origin v0.6.4
+gh release create v0.6.4 --repo t3rr0rz0n3/arreltheme-ha --verify-tag --title "Arrel 0.6.4" --notes "Pop-up de salón con dos botones por fila, luces, enchufes, ambiente, termostato y purificador." --latest
 ```
 
-Comprueba que `v0.6.3` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
+Comprueba que `v0.6.4` no existe en el remoto antes de publicar; si existe, usa el siguiente número. No muevas tags publicados. Revisa la lista de archivos antes del commit para incluir solo cambios de esta entrega.
 
 Prueba primero siguiendo [la guía de tarjetas](cards/README.md#probar-en-tu-dashboard-sin-publicar). No necesitas publicar una release para comprobar los YAML.
 

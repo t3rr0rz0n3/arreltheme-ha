@@ -5,3 +5,5 @@ Cuando se modifique el CSS o el tema, aplicar y comprobar la coherencia del camb
 Mantener sincronizados los estilos de Navbar del dashboard de ejemplo y de `cards/arrel-navbar-paste.yaml`. Los ejemplos deben poder pegarse y editarse directamente en el dashboard, sin build. Documentar cuándo hay que actualizar el tema y cuándo copiar estilos a tarjetas existentes; no afirmar que actualizar HACS modifica su YAML.
 
 Al entregar una versión, facilitar comandos de Git y pasos de prueba directa en Home Assistant. No ejecutar publicación salvo petición explícita. No afirmar validación visual sin probar en una instancia real.
+
+En los pop-ups Bubble Card, agrupar botones de dos en dos con horizontal-stack. Dejar controles complejos (termostato, purificador) y el último botón impar a ancho completo. Conservar entidades editables en variables y acciones correctamente anidadas.

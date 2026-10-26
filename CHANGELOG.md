@@ -1,5 +1,10 @@
 # Historial de cambios
 
+## 0.6.4 — Sin publicar
+
+- Pop-up de salón con parejas de botones en horizontal-stack y entidades centralizadas.
+- Tres luces regulables, ambiente, enchufes, termostato y purificador; acciones anidadas y feature fan-speed corregidas.
+
 ## 0.6.3 — Sin publicar
 
 - Ejemplo Better Thermostat normal con entidades editables, ventana, humedad y calefacción morada.

@@ -213,3 +213,7 @@ La superficie usa las variables nativas del tema: `ha-card-background`, `ha-card
 Para probar: actualiza el tema si todavía tienes una versión anterior, ejecuta `frontend.reload_themes`, selecciona Arrel y recarga el navegador. Añade la tarjeta y comprueba temperatura actual/objetivo, humedad, indicador de ventana y modos disponibles, en claro y oscuro y en móvil. Ajustar la consigna actúa sobre tu termostato real. Validación local del YAML y revisión del código de la tarjeta; pendiente de prueba visual en Home Assistant.
 
 Referencia: [Better Thermostat UI Card — configuración y colores](https://github.com/KartoffelToby/better-thermostat-ui-card#readme).
+
+### Distribución de controles en los pop-ups
+
+La [plantilla de salón](cards/arrel-room-popup-paste.yaml) agrupa los botones en filas de dos con `horizontal-stack`. Incluye tres luces regulables, ambiente, dos enchufes, termostato y purificador. Edita sus entidades en `variables`; elimina las secciones que no uses. El termostato requiere Better Thermostat UI Card. Consulta [configuración y pruebas](cards/README.md#pop-ups-con-dos-botones-por-fila).

@@ -74,7 +74,7 @@ variables:
 
 **Conserva ambos niveles de comillas**: las exteriores son YAML y las interiores indican texto a Config Template Card. `popup_id` incluye `#`. El resto de la tarjeta referencia estas variables; no tienes que buscar ni sustituir entidades más abajo. Evita apóstrofos dentro de estos valores, o escápalos como texto JavaScript.
 
-Para Dormitorio, duplica la tarjeta, cambia `popup_id` a `"'#room-dormitorio'"`, nombre, icono y las cinco entidades. Repite para cada nueva habitación. Si falta un dispositivo, elimina su control de `card.cards`, su referencia de `entities` y su variable.
+Para Dormitorio, duplica la tarjeta, cambia `popup_id` a `"'#room-dormitorio'"`, nombre, icono y las entidades de los controles que conserves. Repite para cada nueva habitación. Si falta un dispositivo, elimina su control de `card.cards`, su referencia de `entities` y su variable.
 
 **La habitación y el pop-up son tarjetas independientes.** Configura sus entidades en ambas tarjetas. No hay un archivo externo ni un build. Las variables son locales a cada copia; no definas variables globales de Config Template Card con los mismos nombres.
 
@@ -146,3 +146,15 @@ La superficie usa las variables nativas del tema: `ha-card-background`, `ha-card
 Para probar: actualiza el tema si todavía tienes una versión anterior, ejecuta `frontend.reload_themes`, selecciona Arrel y recarga el navegador. Añade la tarjeta y comprueba temperatura actual/objetivo, humedad, indicador de ventana y modos disponibles, en claro y oscuro y en móvil. Ajustar la consigna actúa sobre tu termostato real. Validación local del YAML y revisión del código de la tarjeta; pendiente de prueba visual en Home Assistant.
 
 Referencia: [Better Thermostat UI Card — configuración y colores](https://github.com/KartoffelToby/better-thermostat-ui-card#readme).
+
+## Pop-ups con dos botones por fila
+
+La [plantilla del pop-up](arrel-room-popup-paste.yaml) incluye el salón completo: Luz Sofa y Luz Aux en una fila; Leds Tv a ancho completo; temperatura/humedad y presencia/ventana en dos filas; dos enchufes juntos; termostato y purificador a ancho completo. Requiere también Better Thermostat UI Card si conservas su sección.
+
+Edita las entidades en `variables`: `light`, `light_aux`, `light_tv`, `temperature`, `humidity`, `presence`, `window`, `plug_vacuum`, `plug_tv`, `climate`, `climate_window` y `purifier`. `window` conserva el contacto de puerta de tu ejemplo, mientras que `climate_window` es el contacto de ventana del termostato: son independientes. Cambia el nombre «Ventana» por «Puerta» si representa la puerta de entrada.
+
+Para añadir otra pareja, duplica un bloque `horizontal-stack`, cambia los nombres y añade las nuevas variables y sus referencias a `entities`. Para quitar un dispositivo, elimina su tarjeta dentro de la fila, su variable y su entrada en `entities`; elimina también cualquier fila que quede vacía. Los títulos y nombres de los controles se editan en sus campos `name`.
+
+Las acciones usan `tap_action: {action: toggle}` y `button_action: {tap_action: {action: toggle}}`. Los enchufes son `switch`, sin opciones de slider. El purificador utiliza `features: [{type: fan-speed}]`; no lleva opciones de Bubble Card dentro de la función Tile. [Referencia de fan-speed](https://www.home-assistant.io/dashboards/features/#fan-speed).
+
+Pega el archivo actualizado en tu tarjeta manual conservando las variables que ya personalizaste. No necesitas actualizar el tema para este cambio de distribución. Prueba a ancho móvil: nombres largos, ambos sliders, enchufes, termostato y velocidad del ventilador. Las acciones controlan tus dispositivos reales. Comprueba que las actualizaciones no cierren el pop-up; Config Template Card recrea su contenido al cambiar una entidad observada.
